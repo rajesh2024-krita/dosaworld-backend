@@ -2,10 +2,10 @@
     "name": "backend",
     "version": "1.0.0",
     "description": "backend is the ultimate backend solution",
-    "main": "src/index.js",
+    "main": "index.js",
     "scripts": {
         "setup": "npm install && npm update",
-        "start": "node src/index.js"
+        "start": "node index.js"
     },
     "keywords": [
         "express",
