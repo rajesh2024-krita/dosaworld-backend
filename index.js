@@ -1,16 +1,23 @@
-import express from "express";
-import cors from "cors";
-import authRoutes from "./src/routes/authRoutes.js";
-import activityLogs from "./src/routes/activityLogs.js";
-import userRoutes from "./src/routes/userRoutes.js";
-import categoryRoutes from "./src/routes/categoryRoutes.js";
-import itemRoutes from "./src/routes/itemRoutes.js";
-import reservationRoutes from "./src/routes/reservationRoutes.js";
-import menuRoutes from "./src/routes/menuRoutes.js";
-import timeSlotRoutes from "./src/routes/timeSlotRoutes.js";
+const express = require("express");
+const cors = require("cors");
+
+const authRoutes = require("./src/routes/authRoutes");
+const activityLogs = require("./src/routes/activityLogs");
+const userRoutes = require("./src/routes/userRoutes");
+const categoryRoutes = require("./src/routes/categoryRoutes");
+const itemRoutes = require("./src/routes/itemRoutes");
+const reservationRoutes = require("./src/routes/reservationRoutes");
+const menuRoutes = require("./src/routes/menuRoutes");
+const timeSlotRoutes = require("./src/routes/timeSlotRoutes");
 
 const app = express();
-app.use(cors({ origin: ["http://localhost:5000", "http://localhost:8080"], credentials: true }));
+
+app.use(
+  cors({
+    origin: ["http://localhost:5000", "http://localhost:8080"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Routes
@@ -24,4 +31,6 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/timeslots", timeSlotRoutes);
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`✅ Server running on http://localhost:${PORT}`)
+);
