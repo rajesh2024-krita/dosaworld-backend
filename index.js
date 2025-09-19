@@ -9,6 +9,7 @@ const itemRoutes = require("./src/routes/itemRoutes");
 const reservationRoutes = require("./src/routes/reservationRoutes");
 const menuRoutes = require("./src/routes/menuRoutes");
 const timeSlotRoutes = require("./src/routes/timeSlotRoutes");
+const billingRoutes = require("./src/routes/billingRoutes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/items", itemRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/timeslots", timeSlotRoutes);
+app.use("/api/billings", billingRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () =>
