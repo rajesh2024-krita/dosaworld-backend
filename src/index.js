@@ -24,5 +24,4 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/timeslots", timeSlotRoutes);
 
 const PORT = 3000;
-// app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-export default app;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
