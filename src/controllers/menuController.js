@@ -1,6 +1,6 @@
-import { getMenuData } from "../models/menuModel.js";
+const { getMenuData } = require("../models/menuModel");
 
-export const fetchMenu = async (req, res) => {
+const fetchMenu = async (req, res) => {
   try {
     const rows = await getMenuData();
 
@@ -31,3 +31,5 @@ export const fetchMenu = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch menu" });
   }
 };
+
+module.exports = { fetchMenu };

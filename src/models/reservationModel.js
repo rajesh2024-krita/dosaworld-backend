@@ -1,6 +1,4 @@
-
-// FILE: src/models/reservationModel.js
-import pool from '../config/db.js';
+const pool = require("../config/db");
 
 const ReservationModel = {
   async getAll(filters) {
@@ -60,4 +58,4 @@ const ReservationModel = {
   }
 };
 
-export default ReservationModel;
+module.exports = ReservationModel;

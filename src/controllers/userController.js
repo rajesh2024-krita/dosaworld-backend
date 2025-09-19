@@ -1,6 +1,6 @@
-import { getAllUsers, getUserById } from "../models/userModel.js";
+const { getAllUsers, getUserById } = require("../models/userModel");
 
-export async function fetchUsers(req, res) {
+const fetchUsers = async (req, res) => {
   try {
     const users = await getAllUsers();
     res.json(users);
@@ -8,9 +8,9 @@ export async function fetchUsers(req, res) {
     console.error("Error fetching users:", err);
     res.status(500).json({ error: "Failed to fetch users" });
   }
-}
+};
 
-export async function fetchUser(req, res) {
+const fetchUser = async (req, res) => {
   try {
     const user = await getUserById(req.params.id);
     if (!user) {
@@ -21,4 +21,9 @@ export async function fetchUser(req, res) {
     console.error("Error fetching user:", err);
     res.status(500).json({ error: "Failed to fetch user" });
   }
-}
+};
+
+module.exports = {
+  fetchUsers,
+  fetchUser
+};

@@ -1,5 +1,4 @@
-// FILE: src/controllers/reservationController.js
-import Reservation from '../models/reservationModel.js';
+const Reservation = require("../models/reservationModel");
 
 const reservationController = {
   async list(req, res) {
@@ -71,4 +70,4 @@ const reservationController = {
   }
 };
 
-export default reservationController;
+module.exports = reservationController;

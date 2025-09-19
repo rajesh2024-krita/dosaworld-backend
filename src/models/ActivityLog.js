@@ -1,5 +1,4 @@
-// models/ActivityLog.js
-import db from "../config/db.js";
+const db = require("../config/db");
 
 class ActivityLogModel {
   static async getAll() {
@@ -32,4 +31,4 @@ class ActivityLogModel {
   }
 }
 
-export default ActivityLogModel;
+module.exports = ActivityLogModel;

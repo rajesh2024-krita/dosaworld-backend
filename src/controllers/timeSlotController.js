@@ -1,37 +1,44 @@
-import * as TimeSlot from "../models/TimeSlot.js"
+const TimeSlot = require("../models/TimeSlot");
 
-export const getAllTimeSlots = async (req, res) => {
+const getAllTimeSlots = async (req, res) => {
   try {
-    const slots = await TimeSlot.getAll()
-    res.json(slots)
+    const slots = await TimeSlot.getAll();
+    res.json(slots);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}
+};
 
-export const createTimeSlot = async (req, res) => {
+const createTimeSlot = async (req, res) => {
   try {
-    const slot = await TimeSlot.create(req.body)
-    res.json(slot)
+    const slot = await TimeSlot.create(req.body);
+    res.json(slot);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}
+};
 
-export const updateTimeSlot = async (req, res) => {
+const updateTimeSlot = async (req, res) => {
   try {
-    const slot = await TimeSlot.update(req.params.id, req.body)
-    res.json(slot)
+    const slot = await TimeSlot.update(req.params.id, req.body);
+    res.json(slot);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}
+};
 
-export const deleteTimeSlot = async (req, res) => {
+const deleteTimeSlot = async (req, res) => {
   try {
-    const result = await TimeSlot.remove(req.params.id)
-    res.json(result)
+    const result = await TimeSlot.delete(req.params.id);
+    res.json({ success: result });
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}
+};
+
+module.exports = {
+  getAllTimeSlots,
+  createTimeSlot,
+  updateTimeSlot,
+  deleteTimeSlot
+};

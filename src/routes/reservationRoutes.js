@@ -1,13 +1,12 @@
-// FILE: src/routes/reservationRoutes.js
-import { Router } from 'express';
-import controller from '../controllers/reservationController.js';
+const express = require("express");
+const controller = require("../controllers/reservationController");
 
-const router = Router();
+const router = express.Router();
 
-router.get('/', controller.list);
-router.get('/:id', controller.get);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.delete('/:id', controller.remove);
+router.get("/", controller.list);
+router.get("/:id", controller.get);
+router.post("/", controller.create);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.remove);
 
-export default router;
+module.exports = router;

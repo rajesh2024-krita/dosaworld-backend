@@ -1,8 +1,8 @@
-import express from "express";
-import { fetchMenu } from "../controllers/menuController.js";
+const express = require("express");
+const { fetchMenu } = require("../controllers/menuController");
 
 const router = express.Router();
 
 router.get("/", fetchMenu);
 
-export default router;
+module.exports = router;

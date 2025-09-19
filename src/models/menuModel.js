@@ -1,6 +1,6 @@
-import pool from "../config/db.js";
+const pool = require("../config/db");
 
-export const getMenuData = async () => {
+const getMenuData = async () => {
   const [rows] = await pool.query(`
     SELECT 
       i.id, 
@@ -18,3 +18,5 @@ export const getMenuData = async () => {
   `);
   return rows;
 };
+
+module.exports = { getMenuData };

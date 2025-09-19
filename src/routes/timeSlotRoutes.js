@@ -1,16 +1,16 @@
-import express from "express"
-import {
+const express = require("express");
+const {
   getAllTimeSlots,
   createTimeSlot,
   updateTimeSlot,
   deleteTimeSlot
-} from "../controllers/timeSlotController.js"
+} = require("../controllers/timeSlotController");
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/", getAllTimeSlots)
-router.post("/", createTimeSlot)
-router.put("/:id", updateTimeSlot)
-router.delete("/:id", deleteTimeSlot)
+router.get("/", getAllTimeSlots);
+router.post("/", createTimeSlot);
+router.put("/:id", updateTimeSlot);
+router.delete("/:id", deleteTimeSlot);
 
-export default router
+module.exports = router;

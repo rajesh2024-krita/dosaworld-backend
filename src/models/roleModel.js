@@ -1,6 +1,11 @@
-import pool from "../config/db.js";
+const pool = require("../config/db");
 
-export const findRoleByName = async (roleName) => {
-  const [rows] = await pool.query("SELECT * FROM rbac_roles WHERE name = ?", [roleName]);
+const findRoleByName = async (roleName) => {
+  const [rows] = await pool.query(
+    "SELECT * FROM rbac_roles WHERE name = ?",
+    [roleName]
+  );
   return rows[0];
 };
+
+module.exports = { findRoleByName };

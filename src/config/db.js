@@ -1,13 +1,13 @@
-// src/config/db.js (ESM)
-import { createPool } from 'mysql2/promise.js';
+// src/config/db.js (CommonJS)
+const mysql = require("mysql2/promise");
 
-const pool = createPool({
-  host: 'srv1545.hstgr.io',
-  user: 'u180373631_dosaworld',
-  password: 'Dosa@2025!wd',
-  database: 'u180373631_dosaworld',
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "rbac_app",
   waitForConnections: true,
   connectionLimit: 10
 });
 
-export default pool;
+module.exports = pool;

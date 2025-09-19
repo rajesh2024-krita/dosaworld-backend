@@ -1,6 +1,6 @@
-import * as Item from "../models/itemModel.js";
+const Item = require("../models/itemModel");
 
-export const getItems = async (req, res) => {
+const getItems = async (req, res) => {
   try {
     const items = await Item.getAllItems();
     res.json(items);
@@ -9,7 +9,7 @@ export const getItems = async (req, res) => {
   }
 };
 
-export const getItem = async (req, res) => {
+const getItem = async (req, res) => {
   try {
     const item = await Item.getItemById(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
@@ -19,7 +19,7 @@ export const getItem = async (req, res) => {
   }
 };
 
-export const createItem = async (req, res) => {
+const createItem = async (req, res) => {
   try {
     const newItem = await Item.createItem(req.body);
     res.status(201).json(newItem);
@@ -28,7 +28,7 @@ export const createItem = async (req, res) => {
   }
 };
 
-export const updateItem = async (req, res) => {
+const updateItem = async (req, res) => {
   try {
     const updated = await Item.updateItem(req.params.id, req.body);
     res.json(updated);
@@ -37,11 +37,19 @@ export const updateItem = async (req, res) => {
   }
 };
 
-export const deleteItem = async (req, res) => {
+const deleteItem = async (req, res) => {
   try {
     await Item.deleteItem(req.params.id);
     res.json({ message: "Item deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+};
+
+module.exports = {
+  getItems,
+  getItem,
+  createItem,
+  updateItem,
+  deleteItem
 };

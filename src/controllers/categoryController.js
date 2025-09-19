@@ -1,6 +1,6 @@
-import * as Category from "../models/categoryModel.js";
+const Category = require("../models/categoryModel");
 
-export const getCategories = async (req, res) => {
+const getCategories = async (req, res) => {
   try {
     const categories = await Category.getAllCategories();
     res.json(categories);
@@ -9,7 +9,7 @@ export const getCategories = async (req, res) => {
   }
 };
 
-export const getCategory = async (req, res) => {
+const getCategory = async (req, res) => {
   try {
     const cat = await Category.getCategoryById(req.params.id);
     if (!cat) return res.status(404).json({ message: "Category not found" });
@@ -19,7 +19,7 @@ export const getCategory = async (req, res) => {
   }
 };
 
-export const createCategory = async (req, res) => {
+const createCategory = async (req, res) => {
   try {
     const newCat = await Category.createCategory(req.body);
     res.status(201).json(newCat);
@@ -28,7 +28,7 @@ export const createCategory = async (req, res) => {
   }
 };
 
-export const updateCategory = async (req, res) => {
+const updateCategory = async (req, res) => {
   try {
     const updated = await Category.updateCategory(req.params.id, req.body);
     res.json(updated);
@@ -37,11 +37,19 @@ export const updateCategory = async (req, res) => {
   }
 };
 
-export const deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
     await Category.deleteCategory(req.params.id);
     res.json({ message: "Category deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+};
+
+module.exports = {
+  getCategories,
+  getCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory
 };

@@ -1,6 +1,6 @@
-import pool from "../config/db.js";
+const pool = require("../config/db");
 
-export async function getAllItems() {
+const getAllItems = async () => {
   const [rows] = await pool.query(`
     SELECT i.*, c.name AS categoryName
     FROM items i
@@ -8,33 +8,40 @@ export async function getAllItems() {
     ORDER BY i.id DESC
   `);
   return rows;
-}
+};
 
-export async function getItemById(id) {
+const getItemById = async (id) => {
   const [rows] = await pool.query("SELECT * FROM items WHERE id = ?", [id]);
   return rows[0];
-}
+};
 
-export async function createItem(data) {
+const createItem = async (data) => {
   const { code, name, description, price, categoryId } = data;
-  console.log(code, name, description, price, categoryId)
   const [result] = await pool.query(
     "INSERT INTO items (code, name, description, price, category_id) VALUES (?, ?, ?, ?, ?)",
     [code, name, description, price, categoryId]
   );
   return { id: result.insertId, ...data };
-}
+};
 
-export async function updateItem(id, data) {
+const updateItem = async (id, data) => {
   const { code, name, description, price, categoryId } = data;
   await pool.query(
     "UPDATE items SET code = ?, name = ?, description = ?, price = ?, category_id = ? WHERE id = ?",
     [code, name, description, price, categoryId, id]
   );
   return { id, ...data };
-}
+};
 
-export async function deleteItem(id) {
+const deleteItem = async (id) => {
   await pool.query("DELETE FROM items WHERE id = ?", [id]);
   return true;
-}
+};
+
+module.exports = {
+  getAllItems,
+  getItemById,
+  createItem,
+  updateItem,
+  deleteItem
+};

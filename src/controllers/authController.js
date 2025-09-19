@@ -1,11 +1,11 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { findUserByEmail, createUser, updateLastLogin } from "../models/userModel.js";
-import { findRoleByName } from "../models/roleModel.js";
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { findUserByEmail, createUser, updateLastLogin } = require("../models/userModel");
+const { findRoleByName } = require("../models/roleModel");
 
 const JWT_SECRET = "your_jwt_secret_key";
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     console.log("📥 Login request body:", req.body);
 
@@ -26,7 +26,6 @@ export const login = async (req, res) => {
       return res.status(403).json({ message: "Account is deactivated" });
     }
 
-    // Get permissions
     const role = await findRoleByName(user.role);
     console.log("🎭 Role data:", role);
 
@@ -50,7 +49,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
   try {
     console.log("📥 Register request body:", req.body);
 
@@ -86,3 +85,5 @@ export const register = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+module.exports = { login, register };

@@ -1,6 +1,5 @@
-// routes/activityLogs.js
-import express from "express";
-import { getLogs, addLog, exportLogs } from "../controllers/ActivityLogController.js";
+const express = require("express");
+const { getLogs, addLog, exportLogs } = require("../controllers/ActivityLogController");
 
 const router = express.Router();
 
@@ -13,4 +12,4 @@ router.post("/", addLog);
 // Export logs
 router.get("/export", exportLogs);
 
-export default router;
+module.exports = router;
