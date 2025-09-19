@@ -2,10 +2,10 @@
 const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "rbac_app",
+  host: 'srv1545.hstgr.io',
+  user: 'u180373631_dosaworld',
+  password: 'Dosa@2025!wd',
+  database: 'u180373631_dosaworld',
   waitForConnections: true,
   connectionLimit: 10
 });
