@@ -21,6 +21,7 @@ const createCategory = async (data) => {
 
 const updateCategory = async (id, data) => {
   const { name, description, image } = data;
+  console.log('name, description, image', name, description, image)
   await pool.query(
     "UPDATE categories SET name = ?, description = ?, image = ? WHERE id = ?",
     [name, description, image, id]
