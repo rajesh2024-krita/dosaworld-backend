@@ -9,13 +9,16 @@ const transporter = nodemailer.createTransport({
     user: "rajesh.kritatechnosolutions@gmail.com",
     pass: "awjx qqtp tdoe uftj", // consider using environment variable
   },
+  tls: {
+    rejectUnauthorized: false, // ✅ Ignore self-signed certificate
+  },
 });
 
 // Send mail function
 const sendMail = async ({ to, subject, text, html }) => {
   try {
     const info = await transporter.sendMail({
-      from: '"EOD Report"',
+      from: '"rajesh.kritatechnosolutions@gmail.com"',
       to,
       subject,
       text,

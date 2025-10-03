@@ -1,6 +1,8 @@
 const Reservation = require("../models/reservationModel");
+const sendMail = require("../util/mail"); // ✅ Import sendMail function
 
 const reservationController = {
+  // List reservations
   async list(req, res) {
     try {
       const filters = {
@@ -16,6 +18,7 @@ const reservationController = {
     }
   },
 
+  // Get a reservation
   async get(req, res) {
     try {
       const id = Number(req.params.id);
@@ -28,6 +31,7 @@ const reservationController = {
     }
   },
 
+  // Create a reservation
   async create(req, res) {
     try {
       const payload = req.body;
@@ -40,21 +44,56 @@ const reservationController = {
         !payload.time ||
         !payload.party_size
       ) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "first_name, last_name, phone, email, party_size, date and time are required",
-          });
+        return res.status(400).json({
+          message:
+            "first_name, last_name, phone, email, party_size, date and time are required",
+        });
       }
+
       const created = await Reservation.create(payload);
+
+      // 1️⃣ Send email to admin about new reservation
+      const adminEmail = "rajesh.kritatechnosolutions@gmail.com"; // replace with your admin email
+      await sendMail({
+        to: adminEmail,
+        subject: "New Reservation Booked",
+        html: `
+        <h2>New Reservation</h2>
+        <p><strong>Name:</strong> ${payload.first_name} ${payload.last_name}</p>
+        <p><strong>Email:</strong> ${payload.email}</p>
+        <p><strong>Phone:</strong> ${payload.phone}</p>
+        <p><strong>Date:</strong> ${payload.date}</p>
+        <p><strong>Time:</strong> ${payload.time}</p>
+        <p><strong>Party Size:</strong> ${payload.party_size}</p>
+      `,
+        replyTo: payload.email, // allows admin to reply to customer directly
+      });
+
+      // 2️⃣ Send confirmation email to customer
+      await sendMail({
+        to: payload.email,
+        subject: "Your Reservation is Confirmed",
+        html: `
+        <h2>Reservation Confirmed</h2>
+        <p>Dear ${payload.first_name} ${payload.last_name},</p>
+        <p>Your reservation has been successfully booked.</p>
+        <p><strong>Date:</strong> ${payload.date}</p>
+        <p><strong>Time:</strong> ${payload.time}</p>
+        <p><strong>Party Size:</strong> ${payload.party_size}</p>
+        <br>
+        <p>Thank you,<br>Your Restaurant Team</p>
+      `,
+        replyTo: adminEmail, // replies go back to admin
+      });
+
       res.status(201).json(created);
     } catch (err) {
       console.error("Error creating reservation", err);
-      res.status(500).json({ message: "Server error" });
+      res.status(500).json({ message: "Server error", error: err.message });
     }
   },
 
+  // Update reservation
   async update(req, res) {
     try {
       const id = Number(req.params.id);
@@ -69,6 +108,7 @@ const reservationController = {
     }
   },
 
+  // Delete reservation
   async remove(req, res) {
     try {
       const id = Number(req.params.id);
