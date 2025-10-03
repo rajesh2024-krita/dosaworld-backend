@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+require("./src/scheduler/eodReport");
+
 
 const authRoutes = require("./src/routes/authRoutes");
 const activityLogs = require("./src/routes/activityLogs");
