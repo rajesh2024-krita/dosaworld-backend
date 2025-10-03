@@ -11,6 +11,7 @@ const menuRoutes = require("./src/routes/menuRoutes");
 const timeSlotRoutes = require("./src/routes/timeSlotRoutes");
 const billingRoutes = require("./src/routes/billingRoutes");
 const inventoryRoutes = require("./src/routes/inventoryRoutes");
+const usageRoutes = require("./src/routes/usageRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/timeslots", timeSlotRoutes);
 app.use("/api/billings", billingRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/usage", usageRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () =>
