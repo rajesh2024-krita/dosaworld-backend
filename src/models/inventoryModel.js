@@ -1,35 +1,43 @@
-const db = require("../config/db");
+const db = require("../config/db"); // assuming mysql2/promise or wrap it
 
 const Inventory = {
-  getAll: (callback) => {
-    db.query("SELECT * FROM inventory", callback);
+  getAll: async () => {
+    const [rows] = await db.query("SELECT * FROM inventory");
+    return rows;
   },
 
-  getById: (inventoryId, callback) => {
-    db.query("SELECT * FROM inventory WHERE id = ?", [inventoryId], callback);
+  getById: async (id) => {
+    const [rows] = await db.query("SELECT * FROM inventory WHERE id = ?", [id]);
+    return rows[0]; // return single item
   },
 
-  create: (item, callback) => {
+  create: async (item) => {
     const { product, packSize, price, qty, total, status, alertQty } = item;
-    db.query(
+    const [result] = await db.query(
       "INSERT INTO inventory (product, packSize, price, qty, total, status, alertQty) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [product, packSize, price, qty, total, status, alertQty],
-      callback
+      [product, packSize, price, qty, total, status, alertQty]
     );
+    return { id: result.insertId, ...item };
   },
 
-  update: (id, item, callback) => {
+  update: async (id, item) => {
     const { product, packSize, price, qty, total, status, alertQty } = item;
-    db.query(
+    const [result] = await db.query(
       "UPDATE inventory SET product=?, packSize=?, price=?, qty=?, total=?, status=?, alertQty=? WHERE id=?",
-      [product, packSize, price, qty, total, status, alertQty, id],
-      callback
+      [product, packSize, price, qty, total, status, alertQty, id]
     );
+
+    if (result.affectedRows === 0) throw new Error("Item not found");
+
+    const updatedItem = await Inventory.getById(id);
+    return updatedItem;
   },
 
-  delete: (id, callback) => {
-    db.query("DELETE FROM inventory WHERE id=?", [id], callback);
-  }
+  delete: async (id) => {
+    const [result] = await db.query("DELETE FROM inventory WHERE id=?", [id]);
+    if (result.affectedRows === 0) throw new Error("Item not found");
+    return true;
+  },
 };
 
 module.exports = Inventory;

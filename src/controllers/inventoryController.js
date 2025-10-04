@@ -1,73 +1,52 @@
 const Inventory = require("../models/inventoryModel");
 
-// Get all inventory items
-exports.getInventory = (req, res) => {
-  Inventory.getAll((err, results) => {
-    if (err) {
-      console.error("❌ Error fetching inventory:", err);
-      return res.status(500).json({ success: false, message: "Failed to fetch inventory", error: err });
-    }
-    res.json({ success: true, message: "Inventory fetched successfully", data: results });
-  });
+exports.getInventory = async (req, res) => {
+  try {
+    const data = await Inventory.getAll();
+    res.json({ success: true, message: "Inventory fetched successfully", data });
+  } catch (err) {
+    console.error("Error fetching inventory:", err);
+    res.status(500).json({ success: false, message: "Failed to fetch inventory", error: err.message });
+  }
 };
 
-// Get inventory by ID
-exports.getInventoryById = (req, res) => {
-  const { id } = req.params;
-  Inventory.getById(id, (err, results) => {
-    if (err) {
-      console.error(`❌ Error fetching inventory for ID ${id}:`, err);
-      return res.status(500).json({ success: false, message: "Failed to fetch item", error: err });
-    }
-    if (!results.length) {
-      return res.status(404).json({ success: false, message: "Item not found" });
-    }
-    res.json({ success: true, message: "Item fetched successfully", data: results[0] });
-  });
+exports.getInventoryById = async (req, res) => {
+  try {
+    const item = await Inventory.getById(req.params.id);
+    if (!item) return res.status(404).json({ success: false, message: "Item not found" });
+    res.json({ success: true, message: "Item fetched successfully", data: item });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Failed to fetch item", error: err.message });
+  }
 };
 
-// Create new inventory item
-exports.createInventory = (req, res) => {
-  const newItem = req.body;
-  Inventory.create(newItem, (err, results) => {
-    if (err) {
-      console.error("❌ Error creating inventory item:", err);
-      return res.status(500).json({ success: false, message: "Failed to add item", error: err });
-    }
-    res.json({ success: true, message: "Item added successfully", id: results.insertId });
-  });
+exports.createInventory = async (req, res) => {
+  try {
+    const newItem = await Inventory.create(req.body);
+    res.status(201).json({ success: true, message: "Item added successfully", data: newItem });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Failed to add item", error: err.message });
+  }
 };
 
-// Update inventory item
-exports.updateInventory = (req, res) => {
-  const { id } = req.params;
-  const updatedItem = req.body;
-
-  Inventory.update(id, updatedItem, (err) => {
-    if (err) {
-      console.error(`❌ Error updating inventory item ID ${id}:`, err);
-      return res.status(500).json({ success: false, message: "Failed to update item", error: err });
-    }
-
-    // Fetch updated item to return in response
-    Inventory.getById(id, (err2, results) => {
-      if (err2) {
-        console.error(`❌ Error fetching updated inventory item ID ${id}:`, err2);
-        return res.status(500).json({ success: false, message: "Updated but failed to fetch item", error: err2 });
-      }
-      res.json({ success: true, message: "Item updated successfully", data: results[0] });
-    });
-  });
+exports.updateInventory = async (req, res) => {
+  try {
+    const updatedItem = await Inventory.update(req.params.id, req.body);
+    res.json({ success: true, message: "Item updated successfully", data: updatedItem });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message, error: err.message });
+  }
 };
 
-// Delete inventory item
-exports.deleteInventory = (req, res) => {
-  const { id } = req.params;
-  Inventory.delete(id, (err) => {
-    if (err) {
-      console.error(`❌ Error deleting inventory item ID ${id}:`, err);
-      return res.status(500).json({ success: false, message: "Failed to delete item", error: err });
-    }
+exports.deleteInventory = async (req, res) => {
+  try {
+    await Inventory.delete(req.params.id);
     res.json({ success: true, message: "Item deleted successfully" });
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message, error: err.message });
+  }
 };
