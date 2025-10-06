@@ -24,11 +24,11 @@ const getFilteredBillings = async (from, to) => {
   const params = [];
 
   if (from) {
-    sql += " AND date >= ?";
+    sql += " AND created_at >= ?";
     params.push(from);
   }
   if (to) {
-    sql += " AND date <= ?";
+    sql += " AND created_at <= ?";
     params.push(to);
   }
 
