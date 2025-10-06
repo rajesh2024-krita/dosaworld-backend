@@ -6,7 +6,7 @@ const getLogs = async (req, res) => {
     const logs = await ActivityLogModel.getAll();
     res.json(logs);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch activity logs" });
+    res.status(500).json({ error: "Failed to fetch activity logs", err });
   }
 };
 

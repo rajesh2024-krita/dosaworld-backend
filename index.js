@@ -38,6 +38,8 @@ app.use("/api/timeslots", timeSlotRoutes);
 app.use("/api/billings", billingRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/usage", usageRoutes);
+// Routes
+app.use('/api', require('./src/routes/offerSectionRoutes'));
 
 const PORT = 3000;
 app.listen(PORT, () =>

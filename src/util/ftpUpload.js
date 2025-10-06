@@ -10,7 +10,7 @@ async function uploadToFTP(file) {
     await client.access({
       host: 'ftp.kritatechnosolutions.com',
       user: 'u180373631.dosaworldadmin',
-      password: 'Dosa@2025!wd',
+      password: 'u180373631.dosaworldadmin',
       secure: false, // set true if your host requires FTPS
     });
 
