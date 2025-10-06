@@ -1,107 +1,103 @@
+
 const db = require("../config/db");
 
 class OfferSection {
-  // Create new offer section with buckets
-  static async create(data, callback) {
+  // ✅ Create new offer section
+  static async create(data) {
     const connection = await db.getConnection();
     try {
       await connection.beginTransaction();
 
       let { title, subtitle, description, backgroundImage, biryaniImage, isActive = 1, buckets } = data;
 
-      // Sanitize images
-      backgroundImage = (backgroundImage && typeof backgroundImage === 'string') ? backgroundImage : null;
-      biryaniImage = (biryaniImage && typeof biryaniImage === 'string') ? biryaniImage : null;
+      backgroundImage = (typeof backgroundImage === 'string' && backgroundImage) ? backgroundImage : null;
+      biryaniImage = (typeof biryaniImage === 'string' && biryaniImage) ? biryaniImage : null;
 
-      // Convert isActive to 0/1
-      isActive = (isActive === true || isActive === 'true' || isActive === 1 || isActive === '1') ? 1 : 0;
+      // Boolean to integer
+      isActive = ['true', true, 1, '1'].includes(isActive) ? 1 : 0;
 
-      // Parse buckets if string
+      // Buckets parsing
       if (typeof buckets === 'string') buckets = JSON.parse(buckets);
       buckets = Array.isArray(buckets) ? buckets : [];
 
-      const [results] = await connection.query(
-        `INSERT INTO offer_sections (title, subtitle, description, background_image, biryani_image, is_active)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [title || null, subtitle || null, description || null, backgroundImage, biryaniImage, isActive]
+      // Insert main offer section
+      const [result] = await connection.query(
+        `INSERT INTO offer_sections (title, subtitle, description, biryani_image, is_active)
+         VALUES (?, ?, ?, ?, ?)`,
+        [title || null, subtitle || null, description || null, biryaniImage, isActive]
       );
 
-      const offerSectionId = results.insertId;
+      const offerSectionId = result.insertId;
 
       // Insert buckets
-      for (let i = 0; i < buckets.length; i++) {
-        const bucket = buckets[i];
+      for (const [i, bucket] of buckets.entries()) {
         if (!bucket.name || !bucket.people || !bucket.price) continue;
         const bucketSize = bucket.size || `bucket-${i + 1}`;
         await connection.query(
-          `INSERT INTO buckets (offer_section_id, size, name, people, price) VALUES (?, ?, ?, ?, ?)`,
+          `INSERT INTO buckets (offer_section_id, size, name, people, price)
+           VALUES (?, ?, ?, ?, ?)`,
           [offerSectionId, bucketSize, bucket.name, bucket.people, bucket.price]
         );
       }
 
       await connection.commit();
-      callback(null, { _id: offerSectionId, ...data });
+      return { success: true, _id: offerSectionId, ...data };
     } catch (err) {
       await connection.rollback();
-      callback(err);
+      throw err;
     } finally {
       connection.release();
     }
   }
 
-  // Update offer section
-  static async update(id, data, callback) {
+  // ✅ Update offer section
+  static async update(id, data) {
     const connection = await db.getConnection();
     try {
       await connection.beginTransaction();
 
       let { title, subtitle, description, backgroundImage, biryaniImage, isActive = 1, buckets } = data;
 
-      // Sanitize images
-      backgroundImage = (backgroundImage && typeof backgroundImage === 'string') ? backgroundImage : null;
-      biryaniImage = (biryaniImage && typeof biryaniImage === 'string') ? biryaniImage : null;
+      backgroundImage = (typeof backgroundImage === 'string' && backgroundImage) ? backgroundImage : null;
+      biryaniImage = (typeof biryaniImage === 'string' && biryaniImage) ? biryaniImage : null;
+      isActive = ['true', true, 1, '1'].includes(isActive) ? 1 : 0;
 
-      // Convert isActive to 0/1
-      isActive = (isActive === true || isActive === 'true' || isActive === 1 || isActive === '1') ? 1 : 0;
-
-      // Parse buckets if string
       if (typeof buckets === 'string') buckets = JSON.parse(buckets);
       buckets = Array.isArray(buckets) ? buckets : [];
 
-      // Update main offer section
+      // Update section
       await connection.query(
-        `UPDATE offer_sections 
-         SET title=?, subtitle=?, description=?, background_image=?, biryani_image=?, is_active=? 
+        `UPDATE offer_sections
+         SET title=?, subtitle=?, description=?, background_image=?, biryani_image=?, is_active=?
          WHERE id=?`,
         [title || null, subtitle || null, description || null, backgroundImage, biryaniImage, isActive, id]
       );
 
-      // Delete old buckets
-      await connection.query("DELETE FROM buckets WHERE offer_section_id=?", [id]);
-
-      // Insert new buckets
-      for (let i = 0; i < buckets.length; i++) {
-        const bucket = buckets[i];
+      // Delete + reinsert buckets
+      await connection.query(`DELETE FROM buckets WHERE offer_section_id=?`, [id]);
+      for (const [i, bucket] of buckets.entries()) {
         if (!bucket.name || !bucket.people || !bucket.price) continue;
         const bucketSize = bucket.size || `bucket-${i + 1}`;
         await connection.query(
-          `INSERT INTO buckets (offer_section_id, size, name, people, price) VALUES (?, ?, ?, ?, ?)`,
+          `INSERT INTO buckets (offer_section_id, size, name, people, price)
+           VALUES (?, ?, ?, ?, ?)`,
           [id, bucketSize, bucket.name, bucket.people, bucket.price]
         );
       }
 
       await connection.commit();
-      callback(null, { _id: id, ...data });
+      return { success: true, _id: id, ...data };
     } catch (err) {
       await connection.rollback();
-      callback(err);
+      throw err;
     } finally {
       connection.release();
     }
   }
 
+  // ✅ The remaining methods can stay callback-based (simple reads)
   static delete(id, callback) {
-    db.query("DELETE FROM offer_sections WHERE id=?", [id], callback);
+    db.query(`DELETE FROM offer_sections WHERE id=?`, [id], callback);
   }
 
   static findAll(callback) {
@@ -115,22 +111,18 @@ class OfferSection {
     `;
     db.query(query, (err, results) => {
       if (err) return callback(err);
-      const sections = results.map(row => {
-        const buckets = {};
-        if (row.buckets_data) JSON.parse(`[${row.buckets_data}]`).forEach(b => { buckets[b.size] = b; });
-        return { 
-          _id: row.id, 
-          title: row.title, 
-          subtitle: row.subtitle, 
-          description: row.description, 
-          backgroundImage: row.background_image, 
-          biryaniImage: row.biryani_image, 
-          isActive: !!row.is_active, 
-          buckets, 
-          createdAt: row.created_at, 
-          updatedAt: row.updated_at 
-        };
-      });
+      const sections = results.map(row => ({
+        _id: row.id,
+        title: row.title,
+        subtitle: row.subtitle,
+        description: row.description,
+        backgroundImage: row.background_image,
+        biryaniImage: row.biryani_image,
+        isActive: !!row.is_active,
+        buckets: row.buckets_data ? JSON.parse(`[${row.buckets_data}]`) : [],
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }));
       callback(null, sections);
     });
   }
