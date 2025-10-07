@@ -51,8 +51,8 @@ cron.schedule("50 23 * * *", async () => {
       // Professional HTML email
       emailHtml = `
         <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; line-height: 1.5;">
-          <p>Dear Owner,</p>
-          <p>Please find below the End of Day (EOD) billing report for <strong>${from.toLocaleDateString()}</strong> to <strong>${to.toLocaleDateString()}</strong>.</p>
+          <p>Dear Founder of Dosa World,</p>
+          <p>Please find below the End of Day (EOD) billing report for <strong>${to.toLocaleDateString()}</strong>.</p>
 
           <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px;">
             <thead>
@@ -80,15 +80,15 @@ cron.schedule("50 23 * * *", async () => {
           </table>
 
           <p style="margin-top: 20px;">All amounts have been verified and submitted for your review.</p>
-          <p>Regards,<br/><strong>Team</strong><br/>Dosa World</p>
+          <p>Regards,<br/><strong>Dosa World Restaurant</strong></p>
         </div>
       `;
     } else {  
       emailHtml = `
         <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; line-height: 1.5;">
-          <p>Dear Founder,</p>
-          <p>There are no billing records for the period <strong>${from.toLocaleDateString()}</strong> to <strong>${to.toLocaleDateString()}</strong>.</p>
-          <p>Regards,<br/><strong>[Employee Name]</strong><br/>Dosa World</p>
+          <p>Dear Founder of Dosa World,</p>
+          <p>There are no billing records for <strong>${to.toLocaleDateString()}</strong>.</p>
+          <p>Regards,<br/><strong>Dosa World Restaurant</strong></p>
         </div>
       `;
     }
