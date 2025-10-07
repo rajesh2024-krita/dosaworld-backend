@@ -16,22 +16,31 @@ const getItemById = async (id) => {
 };
 
 const createItem = async (data) => {
-  const { code, name, description, price, categoryId } = data;
+  const { name, description, price, category_id, code } = data;
+  // const code = Number(data.code); // convert to number
+
+  console.log('code == ', code)
+
+  if (isNaN(code)) {
+    throw new Error("Invalid code: must be a number");
+  }
+
   const [result] = await pool.query(
     "INSERT INTO items (code, name, description, price, category_id) VALUES (?, ?, ?, ?, ?)",
-    [code, name, description, price, categoryId]
+    [code, name, description, price, category_id]
   );
-  return { id: result.insertId, ...data };
-};
 
+  return { id: result.insertId, code, name, description, price, category_id };
+};
 const updateItem = async (id, data) => {
   const { code, name, description, price, categoryId } = data;
-  await pool.query(
-    "UPDATE items SET code = ?, name = ?, description = ?, price = ?, category_id = ? WHERE id = ?",
+  const [result] = await pool.query(
+    `UPDATE items SET code=?, name=?, description=?, price=?, category_id=? WHERE id=?`,
     [code, name, description, price, categoryId, id]
   );
-  return { id, ...data };
+  return result;
 };
+
 
 const deleteItem = async (id) => {
   await pool.query("DELETE FROM items WHERE id = ?", [id]);

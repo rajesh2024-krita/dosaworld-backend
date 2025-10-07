@@ -16,8 +16,8 @@ const express = require('express');
 const router = express.Router();
 const offerController = require('../controllers/offerSectionController');
 
-router.post('/', offerController.uploadOfferFiles, offerController.createOfferSection);
-router.put('/:id', offerController.uploadOfferFiles, offerController.updateOfferSection);
+router.post('/', offerController.createOfferSection);
+router.put('/:id', offerController.updateOfferSection);
 router.delete('/:id', offerController.deleteOfferSection);
 router.get('/', offerController.getAllOfferSections);
 router.get('/active', offerController.getActiveOfferSection);

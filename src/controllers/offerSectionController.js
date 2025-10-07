@@ -160,13 +160,13 @@
 const OfferSection = require('../models/OfferSection');
 const { ftpOffer } = require('../util/ftpOffer');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
 
-// ✅ Middleware for file upload
-exports.uploadOfferFiles = upload.fields([
-  { name: 'backgroundImage', maxCount: 1 },
-  { name: 'biryaniImage', maxCount: 1 },
-]);
+// // ✅ Middleware for file upload
+// exports.uploadOfferFiles = upload.fields([
+//   { name: 'backgroundImage', maxCount: 1 },
+//   { name: 'biryaniImage', maxCount: 1 },
+// ]);
 
 // ✅ CREATE
 exports.createOfferSection = async (req, res) => {

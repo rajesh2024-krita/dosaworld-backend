@@ -39,27 +39,49 @@ const createCategory = async (req, res) => {
 
     res.status(201).json(newCat);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: `error controller - ${err.message}` });
   }
 };
 
 const updateCategory = async (req, res) => {
   try {
-    let imageUrl = req.body.image || null
+    const categoryId = req.params.id
 
-    if (req.file) {
-      imageUrl = await uploadToFTP(req.file) // upload new image to FTP
+    // 1️⃣ Fetch existing category
+    const existingCategory = await Category.getCategoryById(categoryId)
+    if (!existingCategory) {
+      return res.status(404).json({ error: "Category not found" })
     }
 
-    const updated = await Category.updateCategory(req.params.id, {
-      name: req.body.name,
-      description: req.body.description,
-      image: imageUrl,
-    })
-    console.log('updated == ', updated)
+    // 2️⃣ Prepare new data
+    let imageUrl = existingCategory.image || null
+    if (req.file) {
+      imageUrl = await uploadToFTP(req.file)
+    }
 
-    res.json(updated)
+    const newData = {
+      name: req.body.name || existingCategory.name,
+      description: req.body.description || existingCategory.description,
+      image: imageUrl,
+    }
+
+    // 3️⃣ Check if any field has changed
+    const isChanged =
+      newData.name !== existingCategory.name ||
+      newData.description !== existingCategory.description ||
+      newData.image !== existingCategory.image
+
+    if (!isChanged) {
+      return res.json({ message: "No changes detected, category not updated" })
+    }
+
+    // 4️⃣ Perform update
+    const updated = await Category.updateCategory(categoryId, newData)
+    console.log("updated == ", updated)
+
+    res.json({ message: "Category updated successfully", data: updated })
   } catch (err) {
+    console.error(err)
     res.status(500).json({ error: err.message })
   }
 }
