@@ -290,7 +290,7 @@ const reservationController = {
           <p><strong>Date:</strong> ${payload.date}</p>
           <p><strong>Time:</strong> ${payload.time}</p>
           <p><strong>Party Size:</strong> ${payload.party_size}</p>
-          <p>Please arrive 10 minutes prior to your reservation time. We look forward to welcoming you!</p>
+          <p>We are looking forward to welcoming you at your reserved time.</p>
           <br>
           <p>Warm regards,<br><strong>Dosa World Restaurant Team</strong></p>
         `,
@@ -301,7 +301,7 @@ const reservationController = {
           <p><strong>Datum:</strong> ${payload.date}</p>
           <p><strong>Uhrzeit:</strong> ${payload.time}</p>
           <p><strong>Personenzahl:</strong> ${payload.party_size}</p>
-          <p>Bitte kommen Sie etwa 10 Minuten vor der reservierten Zeit. Wir freuen uns auf Ihren Besuch!</p>
+          <p>Wir freuen uns, Sie zur reservierten Zeit begrüßen zu dürfen.</p>
           <br>
           <p>Mit freundlichen Grüßen,<br><strong>Dosa World Restaurant Team</strong></p>
         `,
