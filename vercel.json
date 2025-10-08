@@ -1,40 +1,63 @@
 {
     "version": 2,
-    "rewrites": [
-        { "source": "/api/auth/login", "destination": "/index.js"},
-        { "source": "/api/auth/register", "destination": "/index.js"},
-        { "source": "/api/logs", "destination": "/index.js"},
-        { "source": "/api/logs/export", "destination": "/index.js"},
-        { "source": "/api/users", "destination": "/index.js"},
-        { "source": "/api/users/:id", "destination": "/index.js"},
-        { "source": "/api/categories", "destination": "/index.js"},
-        { "source": "/api/categories/:id", "destination": "/index.js"},
-        { "source": "/api/items", "destination": "/index.js"},
-        { "source": "/api/items/:id", "destination": "/index.js"},
-        { "source": "/api/reservations", "destination": "/index.js"},
-        { "source": "/api/reservations/:id", "destination": "/index.js"},
-        { "source": "/api/menu", "destination": "/index.js"},
-        { "source": "/api/timeslots", "destination": "/index.js"},
-        { "source": "/api/timeslots/:id", "destination": "/index.js"}
-    ],
-    "headers": [
-        { "source": "/api/auth/login", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/auth/register", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/logs", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/logs/export", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/users", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/users/:id", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/categories", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/categories/:id", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/items", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/items/:id", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/reservations", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/reservations/:id", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/menu", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/timeslots", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]},
-        { "source": "/api/timeslots/:id", "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*"}]}
-    ],
     "builds": [
-        { "src": "index.js", "use": "@vercel/node"}
+        {
+            "src": "index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/auth/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/logs/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/users/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/categories/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/items/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/reservations/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/menu/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/timeslots/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/billings/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/inventory/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/usage/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/offer-sections/(.*)",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.js"
+        }
     ]
 }
