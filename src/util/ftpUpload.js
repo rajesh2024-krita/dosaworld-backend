@@ -1,6 +1,7 @@
 // utils/ftpUpload.js
 const ftp = require("basic-ftp");
 const path = require("path");
+const { Readable } = require("stream");
 
 async function uploadToFTP(file) {
   const client = new ftp.Client();
@@ -15,17 +16,26 @@ async function uploadToFTP(file) {
     });
 
     // Ensure the directory exists on FTP
-    await client.ensureDir("/uploads/categories");
-    await client.cd("/uploads/categories");
+    const remoteDir = "/uploads/categories";
+    await client.ensureDir(remoteDir);
+    await client.cd(remoteDir);
 
-    
-    // Upload the file
-    await client.uploadFrom(file.path, file.filename);
-    
-    // Public URL
-    const fileUrl = `https://dosaworldadmin.kritatechnosolutions.com/uploads/categories/${file.filename}`;
-    console.log(fileUrl)
+    // Convert buffer to readable stream
+    const stream = new Readable();
+    stream.push(file.buffer); // push buffer
+    stream.push(null); // end of stream
+
+    // Prepend timestamp to avoid name conflicts
+    const remoteFilename = `${Date.now()}-${file.originalname}`;
+
+    // Upload
+    await client.uploadFrom(stream, remoteFilename);
+
+    // Return public URL
+    const fileUrl = `https://dosaworldadmin.kritatechnosolutions.com/uploads/categories/${remoteFilename}`;
+    console.log("Uploaded file URL:", fileUrl);
     return fileUrl;
+
   } catch (err) {
     console.error("FTP Upload Error:", err);
     throw err;

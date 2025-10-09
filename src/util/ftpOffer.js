@@ -1,6 +1,6 @@
 const ftp = require("basic-ftp");
 const path = require("path");
-const fs = require("fs");
+const { Readable } = require("stream");
 
 const FTP_HOST = "ftp.kritatechnosolutions.com";
 const FTP_USER = "u180373631.dosaworldadmin";
@@ -9,13 +9,13 @@ const FTP_BASE_PATH = "/uploads/OfferImages"; // base folder on FTP
 
 /**
  * Upload a file or create a folder on FTP
- * @param {Object|null} file - file object from multer (if uploading file)
- * @param {string|null} folderName - folder name to create (if creating folder)
+ * @param {Object|null} file - file object from multer (buffer-based)
+ * @param {string|null} folderName - folder name to create (optional)
  * @returns {Promise<string>} - returns remote file path if uploaded
  */
 async function ftpOffer(file = null, folderName = null) {
     const client = new ftp.Client();
-    client.ftp.verbose = true; // for logging, optional
+    client.ftp.verbose = true; // optional logging
 
     try {
         await client.access({
@@ -35,8 +35,18 @@ async function ftpOffer(file = null, folderName = null) {
         }
 
         if (file) {
-            const remotePath = path.posix.join(FTP_BASE_PATH, file.originalname);
-            await client.uploadFrom(file.path, remotePath);
+            // Convert buffer to readable stream
+            const stream = new Readable();
+            stream.push(file.buffer); // push buffer
+            stream.push(null); // end of stream
+
+            // Optional: prepend timestamp to avoid name conflicts
+            const remotePath = path.posix.join(
+                FTP_BASE_PATH,
+                `${Date.now()}-${file.originalname}`
+            );
+
+            await client.uploadFrom(stream, remotePath);
             console.log(`File uploaded: ${remotePath}`);
             return remotePath;
         }
