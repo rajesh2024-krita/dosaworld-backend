@@ -12,27 +12,33 @@ const getAllTimeSlots = async (req, res) => {
 const createTimeSlot = async (req, res) => {
   try {
     const slot = await TimeSlot.create(req.body);
-    res.json(slot);
+    res.json({ success: true, data: slot });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.message === "Time slot already exists.") {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
 const updateTimeSlot = async (req, res) => {
   try {
     const slot = await TimeSlot.update(req.params.id, req.body);
-    res.json(slot);
+    res.json({ success: true, data: slot });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.message === "Time slot already exists.") {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
 const deleteTimeSlot = async (req, res) => {
   try {
     const result = await TimeSlot.delete(req.params.id);
-    res.json({ success: result });
+    res.json({ success: true, data: result });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
