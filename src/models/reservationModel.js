@@ -2,28 +2,59 @@ const pool = require("../config/db");
 
 const ReservationModel = {
   async create(data) {
-    const { first_name, last_name, phone, email, party_size, date, time } =
-      data;
+    const { first_name, last_name, phone, email, party_size, date, time } = data;
+
+    // ✅ Check if a reservation already exists for the same date and time
+    const [existing] = await pool.query(
+      "SELECT id FROM reservations WHERE date = ? AND time = ?",
+      [date, time]
+    );
+
+    if (existing.length > 0) {
+      // ⚠️ Throw error with message + custom code
+      const error = new Error("This time slot is already booked. Please choose another time.");
+      error.code = 409; // Use HTTP 409 Conflict
+      error.type = "DUPLICATE_SLOT";
+      throw error;
+    }
+
+    // ✅ Create new reservation
     const [result] = await pool.query(
-      `INSERT INTO reservations (first_name, last_name, phone, email, party_size, date, time) 
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO reservations (first_name, last_name, phone, email, party_size, date, time)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [first_name, last_name, phone, email, party_size, date, time]
     );
+
     return this.getById(result.insertId);
   },
 
   async update(id, data) {
-    const { first_name, last_name, phone, email, party_size, date, time } =
-      data;
+    const { first_name, last_name, phone, email, party_size, date, time } = data;
+
+    // ✅ Check for conflicts excluding the same reservation
+    const [existing] = await pool.query(
+      "SELECT id FROM reservations WHERE date = ? AND time = ? AND id <> ?",
+      [date, time, id]
+    );
+
+    if (existing.length > 0) {
+      const error = new Error("This time slot is already booked. Please choose another time.");
+      error.code = 409; // Conflict
+      error.type = "DUPLICATE_SLOT";
+      throw error;
+    }
+
+    // ✅ Update record
     await pool.query(
       `UPDATE reservations 
-     SET first_name = ?, last_name = ?, phone = ?, email = ?, party_size = ?, date = ?, time = ? 
-     WHERE id = ?`,
+       SET first_name = ?, last_name = ?, phone = ?, email = ?, party_size = ?, date = ?, time = ? 
+       WHERE id = ?`,
       [first_name, last_name, phone, email, party_size, date, time, id]
     );
+
     return this.getById(id);
   },
-
+  
   async getAll(filters) {
     const conditions = [];
     const params = [];
@@ -48,7 +79,7 @@ const ReservationModel = {
 
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const sql = `SELECT id, first_name, last_name, phone, email, party_size, date, time 
-               FROM reservations ${where} ORDER BY id DESC`;
+                 FROM reservations ${where} ORDER BY id DESC`;
     const [rows] = await pool.query(sql, params);
     return rows;
   },
@@ -56,16 +87,14 @@ const ReservationModel = {
   async getById(id) {
     const [rows] = await pool.query(
       `SELECT id, first_name, last_name, phone, email, party_size, date, time 
-     FROM reservations WHERE id = ?`,
+       FROM reservations WHERE id = ?`,
       [id]
     );
     return rows[0] || null;
   },
 
   async delete(id) {
-    const [result] = await pool.query("DELETE FROM reservations WHERE id = ?", [
-      id,
-    ]);
+    const [result] = await pool.query("DELETE FROM reservations WHERE id = ?", [id]);
     return result.affectedRows > 0;
   },
 };
