@@ -156,10 +156,9 @@
 //   }
 // };
 
-
-const OfferSection = require('../models/OfferSection');
-const { ftpOffer } = require('../util/ftpOffer');
-const multer = require('multer');
+const OfferSection = require("../models/OfferSection");
+const { ftpOffer } = require("../util/ftpOffer");
+const multer = require("multer");
 // const upload = multer({ dest: 'uploads/' });
 
 // // ✅ Middleware for file upload
@@ -169,85 +168,152 @@ const multer = require('multer');
 // ]);
 
 // ✅ CREATE
+// ✅ CREATE - Fixed version
 exports.createOfferSection = async (req, res) => {
   try {
-    console.log('Body:', req.body);
-    console.log('Files:', req.files);
+    console.log("=== CREATE OFFER SECTION ===");
+    console.log("Body fields:", req.body);
+    console.log("Files:", req.files);
 
     const { title, subtitle, description, buckets, isActive } = req.body;
 
+    // ✅ Validate required fields
+    if (!title || !subtitle || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, subtitle, and description are required",
+      });
+    }
+
     let backgroundImage = null;
     let biryaniImage = null;
+
+    // Handle file uploads
     if (req.files?.backgroundImage?.[0]) {
       backgroundImage = await ftpOffer(req.files.backgroundImage[0]);
     }
     if (req.files?.biryaniImage?.[0]) {
       biryaniImage = await ftpOffer(req.files.biryaniImage[0]);
+    } else if (
+      req.body.biryaniImage &&
+      typeof req.body.biryaniImage === "string"
+    ) {
+      // For updates when keeping existing image
+      biryaniImage = req.body.biryaniImage;
     }
 
-    const parsedBuckets =
-      typeof buckets === 'string' ? JSON.parse(buckets) : buckets || [];
+    // Parse buckets
+    let parsedBuckets = [];
+    try {
+      parsedBuckets =
+        typeof buckets === "string" ? JSON.parse(buckets) : buckets || [];
+    } catch (parseError) {
+      console.error("Error parsing buckets:", parseError);
+      parsedBuckets = [];
+    }
 
-    const activeStatus =
-      isActive === true || isActive === 'true' || isActive == 1 ? 1 : 0;
+    // Validate buckets structure
+    if (!Array.isArray(parsedBuckets) || parsedBuckets.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one bucket is required",
+      });
+    }
+
+    const activeStatus = isActive === "true" ? 1 : 0;
 
     const offerData = {
-      title,
-      subtitle,
-      description,
+      title: title.trim(),
+      subtitle: subtitle.trim(),
+      description: description.trim(),
       buckets: parsedBuckets,
       backgroundImage,
       biryaniImage,
       isActive: activeStatus,
     };
+
+    console.log("Final offer data:", offerData);
 
     const result = await OfferSection.create(offerData);
     return res.status(201).json({ success: true, data: result });
   } catch (err) {
-    console.error(err);
+    console.error("Create offer section error:", err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };
-
-// ✅ UPDATE
 exports.updateOfferSection = async (req, res) => {
   try {
-    console.log('Body:', req.body);
-    console.log('Files:', req.files);
+    console.log("=== UPDATE OFFER SECTION ===");
+    console.log("Body fields:", req.body);
+    console.log("Files:", req.files);
+    console.log("Params:", req.params);
 
-    const { title, subtitle, description, buckets, isActive } = req.body;
+    const id = req.params.id;
 
-    let backgroundImage = req.body.backgroundImage || null;
-    let biryaniImage = req.body.biryaniImage || null;
+    console.log("id == ", id);
 
+    // ✅ Fetch existing record
+    const existingOffer = await OfferSection.findById(id);
+    if (!existingOffer) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Offer not found" });
+    }
+
+    const updatedFields = {};
+
+    // ✅ Text fields — only update if provided
+    if (req.body.title) updatedFields.title = req.body.title.trim();
+    if (req.body.subtitle) updatedFields.subtitle = req.body.subtitle.trim();
+    if (req.body.description)
+      updatedFields.description = req.body.description.trim();
+
+    // ✅ Boolean/Active status
+    if (req.body.isActive !== undefined) {
+      updatedFields.isActive = req.body.isActive === "true" ? 1 : 0;
+    }
+
+    // ✅ Buckets (parse only if provided)
+    if (req.body.buckets) {
+      try {
+        updatedFields.buckets =
+          typeof req.body.buckets === "string"
+            ? JSON.parse(req.body.buckets)
+            : req.body.buckets;
+      } catch (err) {
+        console.error("Error parsing buckets:", err);
+      }
+    }
+
+    // ✅ Handle file uploads (update only if new file is uploaded)
     if (req.files?.backgroundImage?.[0]) {
-      backgroundImage = await ftpOffer(req.files.backgroundImage[0]);
+      const uploaded = await ftpOffer(req.files.backgroundImage[0]);
+      updatedFields.backgroundImage = uploaded;
+    } else {
+      // keep existing image if not updated
+      updatedFields.backgroundImage = existingOffer.backgroundImage;
     }
 
     if (req.files?.biryaniImage?.[0]) {
-      biryaniImage = await ftpOffer(req.files.biryaniImage[0]);
+      const uploaded = await ftpOffer(req.files.biryaniImage[0]);
+      updatedFields.biryaniImage = uploaded;
+    } else {
+      // keep existing image if not updated
+      updatedFields.biryaniImage = existingOffer.biryaniImage;
     }
 
-    const parsedBuckets =
-      typeof buckets === 'string' ? JSON.parse(buckets) : buckets || [];
+    console.log("✅ Final updated fields:", updatedFields);
 
-    const activeStatus =
-      isActive === true || isActive === 'true' || isActive == 1 ? 1 : 0;
+    // ✅ Perform update
+    const result = await OfferSection.update(id, updatedFields);
 
-    const offerData = {
-      title,
-      subtitle,
-      description,
-      buckets: parsedBuckets,
-      backgroundImage,
-      biryaniImage,
-      isActive: activeStatus,
-    };
-
-    const result = await OfferSection.update(req.params.id, offerData);
-    return res.status(200).json({ success: true, data: result });
+    return res.status(200).json({
+      success: true,
+      message: "Offer section updated successfully",
+      data: result,
+    });
   } catch (err) {
-    console.error(err);
+    console.error("❌ Update offer section error:", err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -279,7 +345,7 @@ exports.getOfferSectionById = async (req, res) => {
       if (!section)
         return res
           .status(404)
-          .json({ success: false, message: 'Offer section not found' });
+          .json({ success: false, message: "Offer section not found" });
       return res.status(200).json({ success: true, data: section });
     });
   } catch (err) {
@@ -291,24 +357,21 @@ exports.getOfferSectionById = async (req, res) => {
 // ✅ DELETE
 exports.deleteOfferSection = async (req, res) => {
   try {
-    OfferSection.delete(req.params.id, (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: err.message });
-      }
-      if (result.affectedRows === 0)
-        return res
-          .status(404)
-          .json({ success: false, message: 'Offer section not found' });
-      return res
-        .status(200)
-        .json({ success: true, message: 'Offer section deleted successfully' });
+    const deletedData = await OfferSection.delete(req.params.id);
+    if (!deletedData) {
+      return res.status(404).json({ success: false, message: 'Offer section not found' });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Offer section deleted successfully',
+      data: deletedData
     });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: err.message });
   }
 };
+
 
 // ✅ GET ACTIVE
 exports.getActiveOfferSection = async (req, res) => {

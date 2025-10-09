@@ -15,9 +15,16 @@
 const express = require('express');
 const router = express.Router();
 const offerController = require('../controllers/offerSectionController');
+const upload = require("../middleware/upload");
 
-router.post('/', offerController.createOfferSection);
-router.put('/:id', offerController.updateOfferSection);
+router.post('/', upload.fields([
+    { name: 'biryaniImage', maxCount: 1 },
+  ]),
+  offerController.createOfferSection);
+router.put('/:id', upload.fields([
+    { name: 'biryaniImage', maxCount: 1 },
+  ]),
+  offerController.updateOfferSection);
 router.delete('/:id', offerController.deleteOfferSection);
 router.get('/', offerController.getAllOfferSections);
 router.get('/active', offerController.getActiveOfferSection);
