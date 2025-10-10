@@ -1,48 +1,49 @@
-const parties = require("../models/partyModel");
+const PartyModel = require("../models/partyModel");
 
 // Get all parties
-const getAllParties = (req, res) => {
+const getAllParties = async (req, res) => {
   try {
-    res.json({
+    const allParties = await PartyModel.getAll();
+
+    res.status(200).json({
       success: true,
-      data: parties,
-      count: parties.length
+      data: allParties,
+      count: allParties.length
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error fetching parties',
+      message: "Error fetching parties",
       error: error.message
     });
   }
 };
 
 // Get party by ID
-const getPartyById = (req, res) => {
+const getPartyById = async (req, res) => {
   try {
     const { id } = req.params;
-    const party = parties.find(p => p.id === parseInt(id));
+    const party = await PartyModel.getById(id);
+
     if (!party) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: "Party not found" 
+        message: "Party not found"
       });
     }
-    res.json({
-      success: true,
-      data: party
-    });
+
+    res.json({ success: true, data: party });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error fetching party',
+      message: "Error fetching party",
       error: error.message
     });
   }
 };
 
 // Add new party
-const addParty = (req, res) => {
+const addParty = async (req, res) => {
   try {
     const {
       partyName,
@@ -51,179 +52,158 @@ const addParty = (req, res) => {
       email,
       issuedDate,
       dueDate,
+      guests = 0,
+      status = "registered",
+      products = [],
+      address
+    } = req.body;
+
+    if (!partyName || !customerName || !phone || !dueDate || !address) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: partyName, customerName, phone, dueDate, address"
+      });
+    }
+
+    const newParty = await PartyModel.create({
+      partyName,
+      customerName,
+      phone,
+      email: email || "",
+      issuedDate: issuedDate || new Date().toISOString(),
+      dueDate,
       guests,
       status,
       products,
       address
-    } = req.body;
+    });
 
-    // Validation
-    if (!partyName || !customerName || !phone || !dueDate || !address) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields: partyName, customerName, phone, dueDate, address'
-      });
-    }
-
-    const newParty = {
-      ...req.body,
-      id: Date.now(),
-      issuedDate: issuedDate || new Date().toISOString().split('T')[0],
-      status: status || 'registered',
-      products: products || [{ name: '', quantity: 0, price: 0 }],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    parties.push(newParty);
-    
     res.status(201).json({
       success: true,
-      message: 'Party created successfully',
+      message: "Party created successfully",
       data: newParty
     });
   } catch (error) {
+    console.error("Error creating party:", req.body, error); // <--- debug payload
     res.status(500).json({
       success: false,
-      message: 'Error creating party',
+      message: "Error creating party",
       error: error.message
     });
   }
 };
 
-// Update party
-const updateParty = (req, res) => {
+
+
+// Update existing party
+const updateParty = async (req, res) => {
   try {
     const { id } = req.params;
-    const index = parties.findIndex(p => p.id === parseInt(id));
-    if (index === -1) {
-      return res.status(404).json({ 
+    const party = await PartyModel.getById(id);
+
+    if (!party) {
+      return res.status(404).json({
         success: false,
-        message: "Party not found" 
+        message: "Party not found"
       });
     }
 
-    const {
-      partyName,
-      customerName,
-      phone,
-      email,
-      issuedDate,
-      dueDate,
-      guests,
-      status,
-      products,
-      address
-    } = req.body;
+    const updatedParty = await PartyModel.update(id, req.body);
 
-    // Validation
-    if (!partyName || !customerName || !phone || !dueDate || !address) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields'
-      });
-    }
-
-    parties[index] = { 
-      ...parties[index], 
-      ...req.body,
-      updatedAt: new Date().toISOString()
-    };
-    
     res.json({
       success: true,
-      message: 'Party updated successfully',
-      data: parties[index]
+      message: "Party updated successfully",
+      data: updatedParty
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error updating party',
+      message: "Error updating party",
       error: error.message
     });
   }
 };
 
 // Update party status
-const updatePartyStatus = (req, res) => {
+const updatePartyStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const index = parties.findIndex(p => p.id === parseInt(id));
-    
-    if (index === -1) {
-      return res.status(404).json({
-        success: false,
-        message: 'Party not found'
-      });
-    }
 
     if (!status) {
       return res.status(400).json({
         success: false,
-        message: 'Status is required'
+        message: "Status is required"
       });
     }
 
-    const validStatuses = ['registered', 'advance paid', 'paid', 'unpaid', 'completed'];
+    const validStatuses = [
+      "registered",
+      "advance paid",
+      "paid",
+      "unpaid",
+      "completed"
+    ];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid status'
+        message: "Invalid status"
       });
     }
 
-    parties[index].status = status;
-    parties[index].updatedAt = new Date().toISOString();
+    const party = await PartyModel.updateStatus(id, status);
+
+    if (!party) {
+      return res.status(404).json({
+        success: false,
+        message: "Party not found"
+      });
+    }
 
     res.json({
       success: true,
-      message: 'Party status updated successfully',
-      data: parties[index]
+      message: "Party status updated successfully",
+      data: party
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error updating party status',
+      message: "Error updating status",
       error: error.message
     });
   }
 };
 
 // Delete party
-const deleteParty = (req, res) => {
+const deleteParty = async (req, res) => {
   try {
     const { id } = req.params;
-    const index = parties.findIndex(p => p.id === parseInt(id));
-    if (index === -1) {
-      return res.status(404).json({ 
+    const success = await PartyModel.delete(id);
+
+    if (!success) {
+      return res.status(404).json({
         success: false,
-        message: "Party not found" 
+        message: "Party not found"
       });
     }
 
-    const deleted = parties.splice(index, 1);
     res.json({
       success: true,
-      message: "Party deleted successfully",
-      data: deleted[0]
+      message: "Party deleted successfully"
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error deleting party',
+      message: "Error deleting party",
       error: error.message
     });
   }
 };
 
 // Get overdue parties
-const getOverdueParties = (req, res) => {
+const getOverdueParties = async (req, res) => {
   try {
-    const today = new Date().toISOString().split('T')[0];
-    const overdueParties = parties.filter(
-      (p) => p.dueDate && p.dueDate < today && p.status !== 'completed'
-    );
+    const overdueParties = await PartyModel.getOverdueParties();
 
     res.json({
       success: true,
@@ -233,7 +213,7 @@ const getOverdueParties = (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Error fetching overdue parties',
+      message: "Error fetching overdue parties",
       error: error.message
     });
   }
