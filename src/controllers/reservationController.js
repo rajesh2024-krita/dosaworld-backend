@@ -1,5 +1,5 @@
 const Reservation = require("../models/reservationModel");
-const sendMail = require("../util/mail"); // ✅ Import sendMail function
+const {sendMail} = require("../util/mail"); // ✅ Import sendMail function
 
 const reservationController = {
   // List reservations
