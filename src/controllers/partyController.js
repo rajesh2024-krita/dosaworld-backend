@@ -273,7 +273,7 @@ const PartyController = {
       });
 
       // Handle invoice PDF storage if status is completed or paid
-      if ((status === "completed" || status === "paid") && invoicePdf) {
+      if (invoicePdf) {
         try {
           const pdfBuffer = base64ToBuffer(invoicePdf);
           
