@@ -68,7 +68,7 @@ const reservationController = {
       // ✅ Create reservation in DB
       const created = await Reservation.create(payload);
 
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const isGermanNumber = payload.phone.startsWith("+49");
       const lang = isGermanNumber ? "de" : "en";
 
@@ -225,7 +225,7 @@ const reservationController = {
       const updated = await Reservation.update(id, payload);
 
       // ✅ Prepare email
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const isGermanNumber =
         payload.phone?.startsWith("+49") || existing.phone.startsWith("+49");
       const lang = isGermanNumber ? "de" : "en";
@@ -369,7 +369,7 @@ const reservationController = {
       const ok = await Reservation.delete(id);
 
       // Prepare email details
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const isGermanNumber = existing.phone.startsWith("+49");
       const lang = isGermanNumber ? "de" : "en";
 

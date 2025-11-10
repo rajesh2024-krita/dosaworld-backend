@@ -108,7 +108,7 @@ const PartyController = {
         address,
       });
 
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const lang = detectLanguage(phone);
 
       // Email subjects
@@ -335,7 +335,7 @@ const PartyController = {
       }
 
       const updatedParty = await PartyModel.update(id, updateData);
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const lang = detectLanguage(updateData.phone || existing.phone);
 
       const subjects = {
@@ -524,7 +524,7 @@ const PartyController = {
 
       await PartyModel.delete(id);
 
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const lang = detectLanguage(existing.phone);
 
       const subjects = {
@@ -707,7 +707,7 @@ const PartyController = {
         return res.status(404).json({ success: false, message: "Party not found" });
       }
 
-      const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+      const adminEmail = "dosaworldhamburg@gmail.com";
       const lang = detectLanguage(party.phone);
 
       // Handle invoice PDF storage if status changed to completed or paid
