@@ -42,8 +42,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "rajesh.kritatechnosolutions@gmail.com",
-    pass: "awjx qqtp tdoe uftj",
+    user: "dosaworldhamburg@gmail.com",
+    pass: "wfcr wweb mwpn edyj",
   },
   tls: {
     rejectUnauthorized: false,
@@ -54,7 +54,7 @@ const transporter = nodemailer.createTransport({
 const sendMail = async ({ to, subject, text, html }) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Dosa World" <rajesh.kritatechnosolutions@gmail.com>',
+      from: '"Dosa World" <dosaworldhamburg@gmail.com>',
       to,
       subject,
       text,
@@ -73,7 +73,7 @@ const sendMail = async ({ to, subject, text, html }) => {
 const sendMailWithAttachment = async ({ to, subject, text, html, attachments }) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Dosa World" <rajesh.kritatechnosolutions@gmail.com>',
+      from: '"Dosa World" <dosaworldhamburg@gmail.com>',
       to,
       subject,
       text,
@@ -129,7 +129,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
 
         <div style="text-align: center; border-top: 2px solid #10b981; padding-top: 20px; font-size: 14px; color: #6b7280;">
           <p>📍 Lämmertwiete 2 21073 Hamburg, Germany</p>
-          <p>📞 +4917622213135 | ✉️ info@dosaworld.com</p>
+          <p>📞 +4917622213135 | ✉️ dosaworldhamburg@gmail.com</p>
         </div>
       </div>
     `,
@@ -165,7 +165,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
 
         <div style="text-align: center; border-top: 2px solid #10b981; padding-top: 20px; font-size: 14px; color: #6b7280;">
           <p>📍 Lämmertwiete 2 21073 Hamburg, Germany</p>
-          <p>📞 +4917622213135 | ✉️ info@dosaworld.com</p>
+          <p>📞 +4917622213135 | ✉️ dosaworldhamburg@gmail.com</p>
         </div>
       </div>
     `
@@ -197,7 +197,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
 
 // Send invoice to admin for review
 const sendInvoiceToAdmin = async (partyDetails, pdfBuffer) => {
-  const adminEmail = "rajesh.kritatechnosolutions@gmail.com";
+  const adminEmail = "dosaworldhamburg@gmail.com";
   
   const subject = `New Invoice Generated - Party #${partyDetails.id} - ${partyDetails.partyName}`;
   

@@ -95,7 +95,7 @@ cron.schedule("44 12 * * *", async () => {
 
     // Send email
     await sendMail({
-      to: "buvanesh.kritatechnosolutions@gmail.com",
+      to: "dosaworldhamburg@gmail.com",
       subject: `Dosa World End Of The Day Billing Report - ${new Date().toLocaleDateString()}`,
       html: emailHtml,
     });
