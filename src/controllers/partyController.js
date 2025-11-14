@@ -160,7 +160,7 @@ const PartyController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); padding: 30px; border-radius: 16px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #047857; margin: 0; font-size: 28px;">🎉 Your Party is Confirmed!</h2>
               <p style="color: #059669; margin: 5px 0 0 0; font-size: 16px;">We're excited to host your celebration!</p>
             </div>
@@ -213,7 +213,7 @@ const PartyController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); padding: 30px; border-radius: 16px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #047857; margin: 0; font-size: 28px;">🎉 Ihre Party wurde bestätigt!</h2>
               <p style="color: #059669; margin: 5px 0 0 0; font-size: 16px;">Wir freuen uns, Ihre Feier auszurichten!</p>
             </div>
@@ -377,7 +377,7 @@ const PartyController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); padding: 30px; border-radius: 16px; border: 1px solid #fcd34d; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #f59e0b;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #d97706; margin: 0; font-size: 28px;">✏️ Booking Updated</h2>
               <p style="color: #b45309; margin: 5px 0 0 0; font-size: 16px;">Your party details have been updated</p>
             </div>
@@ -416,7 +416,7 @@ const PartyController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); padding: 30px; border-radius: 16px; border: 1px solid #fcd34d; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #f59e0b;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #d97706; margin: 0; font-size: 28px;">✏️ Buchung aktualisiert</h2>
               <p style="color: #b45309; margin: 5px 0 0 0; font-size: 16px;">Ihre Party-Details wurden aktualisiert</p>
             </div>
@@ -564,7 +564,7 @@ const PartyController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 30px; border-radius: 16px; border: 1px solid #fca5a5; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #ef4444;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #dc2626; margin: 0; font-size: 28px;">❌ Booking Canceled</h2>
               <p style="color: #b91c1c; margin: 5px 0 0 0; font-size: 16px;">Your party booking has been canceled</p>
             </div>
@@ -602,7 +602,7 @@ const PartyController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 30px; border-radius: 16px; border: 1px solid #fca5a5; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #ef4444;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: #dc2626; margin: 0; font-size: 28px;">❌ Buchung storniert</h2>
               <p style="color: #b91c1c; margin: 5px 0 0 0; font-size: 16px;">Ihre Party-Buchung wurde storniert</p>
             </div>
@@ -845,7 +845,7 @@ const PartyController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 30px; border-radius: 16px; border: 2px solid ${config.customerColor}; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid ${config.customerColor};">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: ${config.customerColor}; margin: 0; font-size: 28px;">${config.customerIcon} ${config.customerTitles.en}</h2>
               <p style="color: ${config.customerColor}; margin: 5px 0 0 0; font-size: 16px;">Party: ${party.partyName}</p>
             </div>
@@ -896,7 +896,7 @@ const PartyController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding: 30px; border-radius: 16px; border: 2px solid ${config.customerColor}; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid ${config.customerColor};">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
               <h2 style="color: ${config.customerColor}; margin: 0; font-size: 28px;">${config.customerIcon} ${config.customerTitles.de}</h2>
               <p style="color: ${config.customerColor}; margin: 5px 0 0 0; font-size: 16px;">Party: ${party.partyName}</p>
             </div>

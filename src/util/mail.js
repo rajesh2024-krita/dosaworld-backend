@@ -100,7 +100,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
     en: `
       <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); padding: 30px; border-radius: 16px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
         <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #10b981;">
-          <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+          <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
           <h2 style="color: #047857; margin: 0; font-size: 28px;">📄 Your Invoice</h2>
           <p style="color: #059669; margin: 5px 0 0 0; font-size: 16px;">Thank you for your business!</p>
         </div>
@@ -136,7 +136,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
     de: `
       <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); padding: 30px; border-radius: 16px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
         <div style="text-align: center; padding-bottom: 20px; border-bottom: 2px solid #10b981;">
-          <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
+          <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 120px; margin-bottom: 15px;">
           <h2 style="color: #047857; margin: 0; font-size: 28px;">📄 Ihre Rechnung</h2>
           <p style="color: #059669; margin: 5px 0 0 0; font-size: 16px;">Vielen Dank für Ihren Auftrag!</p>
         </div>

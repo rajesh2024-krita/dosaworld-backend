@@ -1,46 +1,51 @@
-// utils/ftpUpload.js
-const ftp = require("basic-ftp");
+// utils/sftpUpload.js
+const Client = require("ssh2-sftp-client");
 const path = require("path");
-const { Readable } = require("stream");
+
+const sftp = new Client();
+
+const SFTP_HOST = "31.97.36.171";
+const SFTP_USER = "root";
+const SFTP_PASSWORD = "Dosa@world2025";
+const SFTP_BASE_PATH = "/var/www/dosaworld-frontend/dist/uploads/categories";
 
 async function uploadToFTP(file) {
-  const client = new ftp.Client();
-  client.ftp.verbose = false;
-
   try {
-    await client.access({
-      host: 'ftp.kritatechnosolutions.com',
-      user: 'u180373631.dosaworldadmin',
-      password: 'Dosa@2025!wd',
-      secure: false, // set true if your host requires FTPS
+    // Connect
+    await sftp.connect({
+      host: SFTP_HOST,
+      port: 22,
+      username: SFTP_USER,
+      password: SFTP_PASSWORD,
     });
 
-    // Ensure the directory exists on FTP
-    const remoteDir = "/uploads/categories";
-    await client.ensureDir(remoteDir);
-    await client.cd(remoteDir);
+    // Ensure category folder exists
+    try {
+      await sftp.stat(SFTP_BASE_PATH);
+    } catch (err) {
+      await sftp.mkdir(SFTP_BASE_PATH, true); 
+    }
 
-    // Convert buffer to readable stream
-    const stream = new Readable();
-    stream.push(file.buffer); // push buffer
-    stream.push(null); // end of stream
-
-    // Prepend timestamp to avoid name conflicts
+    // Generate unique filename
     const remoteFilename = `${Date.now()}-${file.originalname}`;
 
-    // Upload
-    await client.uploadFrom(stream, remoteFilename);
+    // Build path (posix for SFTP correctness)
+    const remoteFilePath = path.posix.join(SFTP_BASE_PATH, remoteFilename);
 
-    // Return public URL
-    const fileUrl = `https://dosaworldadmin.kritatechnosolutions.com/uploads/categories/${remoteFilename}`;
-    console.log("Uploaded file URL:", fileUrl);
+    // Upload buffer
+    await sftp.put(file.buffer, remoteFilePath);
+
+    // Build public URL
+    const fileUrl = `https://dosaworld.de/uploads/categories/${remoteFilename}`;
+
+    console.log("Uploaded File URL:", fileUrl);
     return fileUrl;
 
   } catch (err) {
-    console.error("FTP Upload Error:", err);
+    console.error("SFTP Upload Error:", err);
     throw err;
   } finally {
-    client.close();
+    await sftp.end();
   }
 }
 

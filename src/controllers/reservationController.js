@@ -107,7 +107,7 @@ const reservationController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #047857; margin: 0;">You're Invited to Dosa World Restaurant!</h2>
             </div>
 
@@ -139,7 +139,7 @@ const reservationController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #047857; margin: 0;">Ihre Einladung ins Dosa World Restaurant!</h2>
             </div>
 
@@ -266,7 +266,7 @@ const reservationController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #047857; margin: 0;">Your Reservation is Updated!</h2>
             </div>
             <div style="padding: 20px; font-size: 16px;">
@@ -294,7 +294,7 @@ const reservationController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #a7f3d0; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #10b981;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #047857; margin: 0;">Ihre Reservierung wurde aktualisiert!</h2>
             </div>
             <div style="padding: 20px; font-size: 16px;">
@@ -405,7 +405,7 @@ const reservationController = {
         en: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #fff7ed; padding: 20px; border-radius: 12px; border: 1px solid #ffd7b5; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #ff9248;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #c2410c; margin: 0;">Reservation Canceled</h2>
             </div>
             <div style="padding: 20px; font-size: 16px;">
@@ -426,7 +426,7 @@ const reservationController = {
         de: `
           <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #fff7ed; padding: 20px; border-radius: 12px; border: 1px solid #ffd7b5; max-width: 600px; margin: auto;">
             <div style="text-align: center; padding-bottom: 10px; border-bottom: 2px solid #ff9248;">
-              <img src="https://dosaworldadmin.kritatechnosolutions.com/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
+              <img src="https://dosaworld.de/assets/logo-H7Hfdi3N.png" alt="Dosa World Logo" style="width: 100px; margin-bottom: 10px;">
               <h2 style="color: #c2410c; margin: 0;">Reservierung storniert</h2>
             </div>
             <div style="padding: 20px; font-size: 16px;">
