@@ -1,62 +1,44 @@
-const ftp = require("basic-ftp");
+const Client = require("ssh2-sftp-client");
 const path = require("path");
-const { Readable } = require("stream");
 
-const FTP_HOST = "ftp.kritatechnosolutions.com";
-const FTP_USER = "u180373631.dosaworldadmin";
-const FTP_PASSWORD = "Dosa@2025!wd";
-const FTP_BASE_PATH = "/uploads/OfferImages"; // base folder on FTP
+const sftp = new Client();
 
-/**
- * Upload a file or create a folder on FTP
- * @param {Object|null} file - file object from multer (buffer-based)
- * @param {string|null} folderName - folder name to create (optional)
- * @returns {Promise<string>} - returns remote file path if uploaded
- */
+const SFTP_HOST = "31.97.36.171";
+const SFTP_USER = "root";
+const SFTP_PASSWORD = "Dosa@world2025";
+const SFTP_BASE_PATH = "/var/www/dosaworld-frontend/dist/uploads/OfferImages"; // inside chroot
+
 async function ftpOffer(file = null, folderName = null) {
-    const client = new ftp.Client();
-    client.ftp.verbose = true; // optional logging
+    await sftp.connect({
+        host: SFTP_HOST,
+        username: SFTP_USER,
+        password: SFTP_PASSWORD,
+    });
 
     try {
-        await client.access({
-            host: FTP_HOST,
-            user: FTP_USER,
-            password: FTP_PASSWORD,
-            secure: false, // true if using FTPS
-        });
-
         if (folderName) {
-            // Create folder for bucket
-            const folderPath = path.posix.join(FTP_BASE_PATH, folderName);
-            await client.ensureDir(folderPath);
-            await client.cd("/"); // reset to root
-            console.log(`Folder created: ${folderPath}`);
+            const folderPath = path.posix.join(SFTP_BASE_PATH, folderName);
+            await sftp.mkdir(folderPath, true);
             return folderPath;
         }
 
         if (file) {
-            // Convert buffer to readable stream
-            const stream = new Readable();
-            stream.push(file.buffer); // push buffer
-            stream.push(null); // end of stream
-
-            // Optional: prepend timestamp to avoid name conflicts
-            const remotePath = path.posix.join(
-                FTP_BASE_PATH,
+            const remoteFilePath = path.posix.join(
+                SFTP_BASE_PATH,
                 `${Date.now()}-${file.originalname}`
             );
 
-            await client.uploadFrom(stream, remotePath);
-            console.log(`File uploaded: ${remotePath}`);
-            return remotePath;
+            await sftp.put(file.buffer, remoteFilePath);
+
+            return remoteFilePath;
         }
 
-        throw new Error("Either file or folderName must be provided");
+        throw new Error("file or folderName is required");
     } catch (err) {
-        console.error("FTP Error:", err);
+        console.error("SFTP Error:", err);
         throw err;
     } finally {
-        client.close();
+        await sftp.end();
     }
 }
 
