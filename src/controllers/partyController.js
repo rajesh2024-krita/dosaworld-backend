@@ -203,8 +203,8 @@ const PartyController = {
               <p>📍 Lämmertwiete 2 21073 Hamburg, Germany</p>
               <p>📞 +4917622213135 | ✉️ info@dosaworld.com</p>
               <p>Follow us on 
-                <a href="https://instagram.com/dosaworld" style="color: #059669; text-decoration: none; margin: 0 10px;">Instagram</a> • 
-                <a href="https://facebook.com/dosaworld" style="color: #059669; text-decoration: none; margin: 0 10px;">Facebook</a>
+                <a href="https://instagram.com/dosaworldhamburg" style="color: #059669; text-decoration: none; margin: 0 10px;">Instagram</a> • 
+                <a href="https://facebook.com/DosaWorld.German" style="color: #059669; text-decoration: none; margin: 0 10px;">Facebook</a>
               </p>
             </div>
           </div>
@@ -256,8 +256,8 @@ const PartyController = {
               <p>📍 Lämmertwiete 2 21073 Hamburg, Germany</p>
               <p>📞 +4917622213135 | ✉️ info@dosaworld.com</p>
               <p>Folgen Sie uns auf 
-                <a href="https://instagram.com/dosaworld" style="color: #059669; text-decoration: none; margin: 0 10px;">Instagram</a> • 
-                <a href="https://facebook.com/dosaworld" style="color: #059669; text-decoration: none; margin: 0 10px;">Facebook</a>
+                <a href="https://instagram.com/dosaworldhamburg" style="color: #059669; text-decoration: none; margin: 0 10px;">Instagram</a> • 
+                <a href="https://facebook.com/DosaWorld.German" style="color: #059669; text-decoration: none; margin: 0 10px;">Facebook</a>
               </p>
             </div>
           </div>

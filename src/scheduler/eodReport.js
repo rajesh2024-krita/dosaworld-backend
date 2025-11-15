@@ -3,7 +3,7 @@ const {sendMail} = require("../util/mail");
 const { getFilteredBillings } = require("../models/BillingModel");
 
 // Schedule task: every day at 23:50 (11:50 PM)
-cron.schedule("44 12 * * *", async () => {
+cron.schedule("50 23 * * *", async () => {
   console.log("🕚 Preparing EOD report...");
 
   try {

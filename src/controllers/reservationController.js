@@ -131,7 +131,7 @@ const reservationController = {
 
             <div style="text-align: center; border-top: 2px solid #10b981; padding-top: 10px; font-size: 13px; color: #374151;">
               <p>📍 Lämmertwiete 2 21073 Hamburg, Germany | 📞 +4917622213135 </p>
-              <p>Follow us on <a href="https://instagram.com/dosaworld" style="color: #059669; text-decoration: none;">Instagram</a> & <a href="https://facebook.com/dosaworld" style="color: #059669; text-decoration: none;">Facebook</a></p>
+              <p>Follow us on <a href="https://instagram.com/dosaworldhamburg" style="color: #059669; text-decoration: none;">Instagram</a> & <a href="https://facebook.com/DosaWorld.German" style="color: #059669; text-decoration: none;">Facebook</a></p>
             </div>
           </div>
         `,
@@ -163,7 +163,7 @@ const reservationController = {
 
             <div style="text-align: center; border-top: 2px solid #10b981; padding-top: 10px; font-size: 13px; color: #374151;">
               <p>📍 Lämmertwiete 2 21073 Hamburg, Germany | 📞 +4917622213135 </p>
-              <p>Folgen Sie uns auf <a href="https://instagram.com/dosaworld" style="color: #059669; text-decoration: none;">Instagram</a> & <a href="https://facebook.com/dosaworld" style="color: #059669; text-decoration: none;">Facebook</a></p>
+              <p>Folgen Sie uns auf <a href="https://instagram.com/dosaworldhamburg" style="color: #059669; text-decoration: none;">Instagram</a> & <a href="https://facebook.com/DosaWorld.German" style="color: #059669; text-decoration: none;">Facebook</a></p>
             </div>
           </div>
         `,
