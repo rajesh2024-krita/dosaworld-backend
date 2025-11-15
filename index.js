@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("./src/scheduler/eodReport");
+const nodemailer = require("nodemailer");
 
 
 const authRoutes = require("./src/routes/authRoutes");
@@ -48,6 +49,44 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/usage", usageRoutes);
 app.use('/api/offer-sections', offerRoutes);
 app.use("/api/parties", partyRoutes);
+
+app.post("/api/contactus", async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    // Create SMTP transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,                   // or 465 for SSL
+      secure: false,               // true for port 465
+      auth: {
+        user: "dosaworldhamburg@gmail.com",
+        pass: "wfcr wweb mwpn edyj",
+      },
+    });
+
+    // Email content
+    const mailOptions = {
+      from: `"Website Contact" dosaworldhamburg@gmail.com`,
+      to: "dosaworldhamburg@gmail.com", // where you want to receive messages
+      subject: "New Contact Form Submission",
+      html: `
+        <h3>New Contact Form Message</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong><br>${message}</p>
+      `,
+    };
+
+    // Send Email
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Email error:", error);
+    res.status(500).json({ message: "Failed to send email", error });
+  }
+});
 
 const PORT = 3000;
 app.listen(PORT, () =>
