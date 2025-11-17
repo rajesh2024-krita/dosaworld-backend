@@ -17,6 +17,8 @@ const inventoryRoutes = require("./src/routes/inventoryRoutes");
 const usageRoutes = require("./src/routes/usageRoutes");
 const offerRoutes = require("./src/routes/offerSectionRoutes");
 const partyRoutes = require("./src/routes/partyRoutes");
+const tableRoutes = require("./src/routes/TableRoutes");
+
 
 const app = express();
 
@@ -49,6 +51,7 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/usage", usageRoutes);
 app.use('/api/offer-sections', offerRoutes);
 app.use("/api/parties", partyRoutes);
+app.use("/api/tables", tableRoutes);
 
 app.post("/api/contactus", async (req, res) => {
   try {

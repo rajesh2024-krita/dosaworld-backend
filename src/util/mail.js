@@ -34,7 +34,13 @@ const sendMail = async ({ to, subject, text, html }) => {
 };
 
 // Send mail with attachment function
-const sendMailWithAttachment = async ({ to, subject, text, html, attachments }) => {
+const sendMailWithAttachment = async ({
+  to,
+  subject,
+  text,
+  html,
+  attachments,
+}) => {
   try {
     const info = await transporter.sendMail({
       from: '"Dosa World" <dosaworldhamburg@gmail.com>',
@@ -54,10 +60,16 @@ const sendMailWithAttachment = async ({ to, subject, text, html, attachments }) 
 };
 
 // Send invoice email function
-const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer, lang = 'en') => {
+const sendInvoiceEmail = async (
+  customerEmail,
+  customerName,
+  partyId,
+  pdfBuffer,
+  lang = "en"
+) => {
   const invoiceSubjects = {
     en: `Your Dosa World Invoice - Party #${partyId}`,
-    de: `Ihre Dosa World Rechnung - Party #${partyId}`
+    de: `Ihre Dosa World Rechnung - Party #${partyId}`,
   };
 
   const invoiceBodies = {
@@ -112,7 +124,9 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
           <div style="background: white; border: 2px solid #34d399; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center;">
             <h3 style="color: #047857; margin-top: 0;">Rechnungsdetails</h3>
             <p><strong>Party ID:</strong> ${partyId}</p>
-            <p><strong>Rechnungsdatum:</strong> ${new Date().toLocaleDateString('de-DE')}</p>
+            <p><strong>Rechnungsdatum:</strong> ${new Date().toLocaleDateString(
+              "de-DE"
+            )}</p>
             <p>Diese Rechnung ist auch in Ihrem Kundenportal verfügbar.</p>
           </div>
 
@@ -132,20 +146,20 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
           <p>📞 +4917622213135 | ✉️ dosaworldhamburg@gmail.com</p>
         </div>
       </div>
-    `
+    `,
   };
 
   const textContent = {
     en: `Your Dosa World invoice for party ${partyId} is attached. Thank you for your business!`,
-    de: `Ihre Dosa World Rechnung für Party ${partyId} ist angehängt. Vielen Dank für Ihren Auftrag!`
+    de: `Ihre Dosa World Rechnung für Party ${partyId} ist angehängt. Vielen Dank für Ihren Auftrag!`,
   };
 
   const attachments = [
     {
-      filename: `Invoice-${partyId}-${customerName.replace(/\s+/g, '_')}.pdf`,
+      filename: `Invoice-${partyId}-${customerName.replace(/\s+/g, "_")}.pdf`,
       content: pdfBuffer,
-      contentType: 'application/pdf'
-    }
+      contentType: "application/pdf",
+    },
   ];
 
   const result = await sendMailWithAttachment({
@@ -153,64 +167,92 @@ const sendInvoiceEmail = async (customerEmail, customerName, partyId, pdfBuffer,
     subject: invoiceSubjects[lang],
     text: textContent[lang],
     html: invoiceBodies[lang],
-    attachments
+    attachments,
   });
 
   return result;
 };
 
+const getPdfBuffer = (base64String) => {
+  if (!base64String) throw new Error("Invoice PDF is missing");
+  // Remove any data URI prefix
+  const cleaned = base64String
+    .replace(/^data:application\/pdf;base64,/, "")
+    .replace(/\s/g, "");
+  return Buffer.from(cleaned, "base64");
+};
+
 // Send invoice to admin for review
-const sendInvoiceToAdmin = async (partyDetails, pdfBuffer) => {
-  const adminEmail = "dosaworldhamburg@gmail.com";
-  
-  const subject = `New Invoice Generated - Party #${partyDetails.id} - ${partyDetails.partyName}`;
-  
-  const html = `
-    <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 700px; margin: auto;">
-      <div style="text-align: center; padding-bottom: 15px; border-bottom: 2px solid #10b981;">
-        <h2 style="color: #047857; margin: 0;">📄 New Invoice Generated</h2>
-      </div>
-      
-      <div style="padding: 20px; font-size: 16px; background: white; border-radius: 8px; margin: 15px 0;">
-        <p>A new invoice has been generated for the following party:</p>
-        
-        <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin: 15px 0;">
-          <h3 style="color: #047857; margin-top: 0;">Party Details</h3>
-          <p><strong>Party ID:</strong> ${partyDetails.id}</p>
-          <p><strong>Party Name:</strong> ${partyDetails.partyName}</p>
-          <p><strong>Customer Name:</strong> ${partyDetails.customerName}</p>
-          <p><strong>Email:</strong> ${partyDetails.email || "N/A"}</p>
-          <p><strong>Phone:</strong> ${partyDetails.phone}</p>
-          <p><strong>Due Date:</strong> ${partyDetails.dueDate}</p>
-          <p><strong>Guests:</strong> ${partyDetails.guests}</p>
-          <p><strong>Status:</strong> <span style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px; font-size: 14px;">${partyDetails.status}</span></p>
-          <p><strong>Generated Date:</strong> ${new Date().toLocaleString()}</p>
+const sendInvoiceToAdmin = async (partyDetails, invoicePdfBase64) => {
+  try {
+    const adminEmail = "dosaworldhamburg@gmail.com";
+
+    // Convert base64 to buffer (remove prefix if present)
+    const base64Data = invoicePdfBase64.replace(
+      /^data:application\/pdf;base64,/,
+      ""
+    );
+    if (!invoicePdfBase64) throw new Error("Invoice PDF is missing");
+
+    const pdfBuffer = getPdfBuffer(invoicePdfBase64);
+
+    const subject = `New Invoice Generated - Party #${partyDetails.id} - ${partyDetails.partyName}`;
+
+    const html = `
+      <div style="font-family: 'Segoe UI', sans-serif; color: #1f2937; background-color: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 700px; margin: auto;">
+        <div style="text-align: center; padding-bottom: 15px; border-bottom: 2px solid #10b981;">
+          <h2 style="color: #047857; margin: 0;">📄 New Invoice Generated</h2>
         </div>
         
-        <p style="color: #6b7280; font-size: 14px;">The invoice has been automatically sent to the customer and is attached to this email for your records.</p>
+        <div style="padding: 20px; font-size: 16px; background: white; border-radius: 8px; margin: 15px 0;">
+          <p>A new invoice has been generated for the following party:</p>
+          
+          <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin: 15px 0;">
+            <h3 style="color: #047857; margin-top: 0;">Party Details</h3>
+            <p><strong>Party ID:</strong> ${partyDetails.id}</p>
+            <p><strong>Party Name:</strong> ${partyDetails.partyName}</p>
+            <p><strong>Customer Name:</strong> ${partyDetails.customerName}</p>
+            <p><strong>Email:</strong> ${partyDetails.email || "N/A"}</p>
+            <p><strong>Phone:</strong> ${partyDetails.phone}</p>
+            <p><strong>Due Date:</strong> ${partyDetails.dueDate}</p>
+            <p><strong>Guests:</strong> ${partyDetails.guests}</p>
+            <p><strong>Status:</strong> <span style="background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 12px; font-size: 14px;">${
+              partyDetails.status
+            }</span></p>
+            <p><strong>Generated Date:</strong> ${new Date().toLocaleString()}</p>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 14px;">The invoice has been automatically sent to the customer and is attached to this email for your records.</p>
+        </div>
       </div>
-    </div>
-  `;
+    `;
 
-  const text = `New invoice generated for Party #${partyDetails.id} - ${partyDetails.partyName}. Customer: ${partyDetails.customerName}`;
+    const text = `New invoice generated for Party #${partyDetails.id} - ${partyDetails.partyName}. Customer: ${partyDetails.customerName}`;
 
-  const attachments = [
-    {
-      filename: `Invoice-${partyDetails.id}-${partyDetails.customerName.replace(/\s+/g, '_')}.pdf`,
-      content: pdfBuffer,
-      contentType: 'application/pdf'
-    }
-  ];
+    const attachments = [
+      {
+        filename: `Invoice-${
+          partyDetails.id
+        }-${partyDetails.customerName.replace(/\s+/g, "_")}.pdf`,
+        content: pdfBuffer,
+        contentType: "application/pdf",
+      },
+    ];
 
-  const result = await sendMailWithAttachment({
-    to: adminEmail,
-    subject,
-    text,
-    html,
-    attachments
-  });
+    // Make sure sendMailWithAttachment is compatible with NodeMailer or your email library
+    const result = await sendMailWithAttachment({
+      to: adminEmail,
+      subject,
+      text,
+      html,
+      attachments,
+    });
 
-  return result;
+    return result;
+  } catch (err) {
+    console.error("Error sending invoice to admin:", err);
+    throw err;
+  }
 };
 
 // Verify transporter connection
@@ -230,5 +272,5 @@ module.exports = {
   sendMailWithAttachment,
   sendInvoiceEmail,
   sendInvoiceToAdmin,
-  verifyTransporter
+  verifyTransporter,
 };

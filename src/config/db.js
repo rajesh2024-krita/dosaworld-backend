@@ -1,6 +1,15 @@
 // src/config/db.js (CommonJS)
 const mysql = require("mysql2/promise");
 
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'dosaworld',
+//   waitForConnections: true,
+//   connectionLimit: 10
+// });
+
 const pool = mysql.createPool({
   host: '31.97.36.171',
   user: 'root',
