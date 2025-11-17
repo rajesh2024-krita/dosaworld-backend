@@ -1,5 +1,5 @@
 const Reservation = require("../models/reservationModel");
-const {sendMail} = require("../util/mail"); // ✅ Import sendMail function
+const { sendMail } = require("../util/mail"); // ✅ Import sendMail function
 
 const reservationController = {
   // List reservations
@@ -175,6 +175,9 @@ const reservationController = {
         subject: subjects["en"].admin,
         html: adminBodies["en"],
         text: "New reservation received at Dosa World.",
+        headers: {
+          "X-Label": "Table Reservation",
+        },
       });
 
       console.log("📧 Admin email sent successfully");
