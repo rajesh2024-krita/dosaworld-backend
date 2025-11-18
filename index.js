@@ -77,7 +77,7 @@ app.post("/api/contactus", async (req, res) => {
         <h3>New Contact Form Message</h3>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Email:</strong> ${phone}</p>
+        <p><strong>Phone No:</strong> ${phone}</p>
         <p><strong>Message:</strong><br>${message}</p>
       `,
     };
