@@ -55,7 +55,7 @@ app.use("/api/tables", tableRoutes);
 
 app.post("/api/contactus", async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, phone } = req.body;
 
     // Create SMTP transporter
     const transporter = nodemailer.createTransport({
@@ -77,6 +77,7 @@ app.post("/api/contactus", async (req, res) => {
         <h3>New Contact Form Message</h3>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Email:</strong> ${phone}</p>
         <p><strong>Message:</strong><br>${message}</p>
       `,
     };
