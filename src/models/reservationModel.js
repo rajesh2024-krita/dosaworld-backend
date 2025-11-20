@@ -79,7 +79,7 @@ const ReservationModel = {
 
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
     const sql = `SELECT id, first_name, last_name, phone, email, party_size, date, time 
-                 FROM reservations ${where} ORDER BY id DESC`;
+                 FROM reservations ${where} ORDER BY date DESC`;
     const [rows] = await pool.query(sql, params);
     return rows;
   },
