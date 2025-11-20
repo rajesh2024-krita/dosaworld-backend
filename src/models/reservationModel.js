@@ -78,7 +78,7 @@ const ReservationModel = {
     }
 
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-    const sql = `SELECT id, first_name, last_name, phone, email, party_size, date, time 
+    const sql = `SELECT * 
                  FROM reservations ${where} ORDER BY id DESC`;
     const [rows] = await pool.query(sql, params);
     return rows;
@@ -86,7 +86,7 @@ const ReservationModel = {
 
   async getById(id) {
     const [rows] = await pool.query(
-      `SELECT id, first_name, last_name, phone, email, party_size, date, time 
+      `SELECT * 
        FROM reservations WHERE id = ?`,
       [id]
     );
