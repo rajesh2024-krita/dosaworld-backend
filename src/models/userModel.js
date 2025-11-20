@@ -38,10 +38,20 @@ const getUserById = async (id) => {
   return rows[0];
 };
 
+const findUserById = async (id) => {
+  const [rows] = await pool.query(
+    "SELECT id, name, email, password, role, status, lastLogin, createdAt FROM rbac_users WHERE id = ?",
+    [id]
+  );
+  return rows[0];
+};
+
+
 module.exports = {
   findUserByEmail,
   createUser,
   updateLastLogin,
   getAllUsers,
-  getUserById
+  getUserById,
+  findUserById
 };

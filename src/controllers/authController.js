@@ -88,24 +88,32 @@ const register = async (req, res) => {
 
 const me = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "No token provided" });
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const user = await findUserById(decoded.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    const role = await findRoleByName(user.role);
-    const permissions = role ? JSON.parse(role.permissions) : [];
+    const roleData = await findRoleByName(user.role);
+    const permissions = roleData ? JSON.parse(roleData.permissions) : [];
 
-    res.json({
+    return res.json({
       ...user,
       permissions,
-      token
+      token,
     });
 
   } catch (err) {
+    console.error("TOKEN ERROR:", err);
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
