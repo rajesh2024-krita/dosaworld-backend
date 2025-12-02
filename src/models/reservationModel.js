@@ -49,7 +49,7 @@ const ReservationModel = {
       `UPDATE reservations 
        SET first_name = ?, last_name = ?, phone = ?, email = ?, party_size = ?, date = ?, time = ?, members = ? 
        WHERE id = ?`,
-      [first_name, last_name, phone, email, party_size, date, time, id, members]
+      [first_name, last_name, phone, email, party_size, date, time, members, id]
     );
 
     return this.getById(id);
