@@ -2,7 +2,7 @@ const pool = require("../config/db");
 
 const ReservationModel = {
   async create(data) {
-    const { first_name, last_name, phone, email, party_size, date, time } = data;
+    const { first_name, last_name, phone, email, party_size, date, time, members } = data;
 
     // ✅ Check if a reservation already exists for the same date and time
     const [existing] = await pool.query(
@@ -20,16 +20,16 @@ const ReservationModel = {
 
     // ✅ Create new reservation
     const [result] = await pool.query(
-      `INSERT INTO reservations (first_name, last_name, phone, email, party_size, date, time)
+      `INSERT INTO reservations (first_name, last_name, phone, email, party_size, date, time, members)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [first_name, last_name, phone, email, party_size, date, time]
+      [first_name, last_name, phone, email, party_size, date, time, members]
     );
 
     return this.getById(result.insertId);
   },
 
   async update(id, data) {
-    const { first_name, last_name, phone, email, party_size, date, time } = data;
+    const { first_name, last_name, phone, email, party_size, date, time, members } = data;
 
     // ✅ Check for conflicts excluding the same reservation
     const [existing] = await pool.query(
@@ -47,9 +47,9 @@ const ReservationModel = {
     // ✅ Update record
     await pool.query(
       `UPDATE reservations 
-       SET first_name = ?, last_name = ?, phone = ?, email = ?, party_size = ?, date = ?, time = ? 
+       SET first_name = ?, last_name = ?, phone = ?, email = ?, party_size = ?, date = ?, time = ?, members = ? 
        WHERE id = ?`,
-      [first_name, last_name, phone, email, party_size, date, time, id]
+      [first_name, last_name, phone, email, party_size, date, time, id, members]
     );
 
     return this.getById(id);
