@@ -21,7 +21,7 @@ const ReservationModel = {
     // ✅ Create new reservation
     const [result] = await pool.query(
       `INSERT INTO reservations (first_name, last_name, phone, email, party_size, date, time, members)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [first_name, last_name, phone, email, party_size, date, time, members]
     );
 
