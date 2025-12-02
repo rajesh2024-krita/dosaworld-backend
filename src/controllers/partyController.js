@@ -318,29 +318,43 @@ const PartyController = {
         text: `New party booking: ${partyName} for ${customerName}`,
       });
 
-      console.log('invoicePdf == ', invoicePdf)
+      const normalizedStatus = String(newParty.status).trim().toLowerCase();
 
+      const statusregistered =
+        (normalizedStatus === "registered") &&
+        invoicePdf;
+
+      console.log('normalizedStatus === "registered"',(normalizedStatus === "registered"),statusregistered);
+      
       // Handle invoice PDF storage if status is completed or paid
-      if (invoicePdf && email) {
+      if (statusregistered) {
       try {
-        const pdfBuffer = Buffer.from(
-          invoicePdf.replace(/^data:application\/pdf;base64,/, ""),
-          "base64"
-        );
+        const pdfBuffer = base64ToBuffer(invoicePdf);
 
-        await sendMail({
-          to: email,
-          subject: `Invoice for your party booking - ${partyName}`,
-          html: `<p>Dear ${customerName},<br>Your invoice for the party booking is attached.</p>`,
-          attachments: [
-            {
-              filename: `invoice_${newParty.id}.pdf`,
-              content: pdfBuffer,
-            },
-          ],
-        });
+        await saveInvoicePDF(newParty.email, pdfBuffer);
 
+        // await sendMail({
+        //   to: email,
+        //   subject: `Invoice for your party booking - ${partyName}`,
+        //   html: `<p>Dear ${customerName},<br>Your invoice for the party booking is attached.</p>`,
+        //   attachments: [
+        //     {
+        //       filename: `invoice_${newParty.id}.pdf`,
+        //       content: pdfBuffer,
+        //     },
+        //   ],
+        // });
+        if (email) {
+          await sendInvoiceEmail(
+            email,
+            customerName,
+            newParty.id,
+            pdfBuffer,
+            lang
+          );
+        }
         console.log("✅ Invoice PDF sent directly to customer");
+        // await sendInvoiceToAdmin(updatedParty, pdfBuffer);
       } catch (pdfError) {
         console.error("❌ Error sending invoice PDF:", pdfError);
       }
@@ -572,7 +586,7 @@ const PartyController = {
 
       // Handle invoice PDF storage if status changed to completed or paid
       const statusChangedToPaidOrCompleted =
-        (normalizedStatus === "completed" || normalizedStatus === "paid") &&
+        (normalizedStatus === "completed" || normalizedStatus === "paid" || normalizedStatus === "registered") &&
         invoicePdf;
 
       if (statusChangedToPaidOrCompleted) {
